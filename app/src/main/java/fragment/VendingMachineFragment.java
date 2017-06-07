@@ -81,7 +81,8 @@ public class VendingMachineFragment extends Fragment {
         mUserCredit = (TextView) view.findViewById(R.id.text_credit);
         mUserCredit.setText(String.format(Locale.US, "Store Credit: $%.02f", mItems.getUserCreditLeft()));
         mUseCreditButton = (Button) view.findViewById(R.id.btn_use_credit);
-        mUseCreditButton.setVisibility(mItems.getUserCreditLeft() > 0 ? View.VISIBLE : View.INVISIBLE);
+        mUseCreditButton.setVisibility(mItems.getUserCreditLeft() > 0 && mItems.getTotalCost() > 0 ? View.VISIBLE : View
+                .INVISIBLE);
         mUseCreditButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -265,7 +266,8 @@ public class VendingMachineFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         mItems.setUserCreditLeft(0);
-                        mUserCredit.setText(String.format(Locale.US, "Store Credit: $%.02f", mItems.getUserCreditLeft()));
+                        mUserCredit.setText(String.format(Locale.US, "Store Credit: $%.02f", mItems.getUserCreditLeft
+                                ()));
                         mCashOut.setVisibility(View.INVISIBLE);
                         dialog.dismiss();
                     }
