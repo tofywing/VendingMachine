@@ -1,0 +1,47 @@
+<resources>
+    <string name="app_name">VendingMachine</string>
+    <string name="item_cola">Cola</string>
+    <string name="item_chips">Chips</string>
+    <string name="item_candy">Candy</string>
+    <string name="price_tag">Price: </string>
+    <string name="alert_delete">The %s is deleted.</string>
+    <string name="cart_empty">The cart is empty.</string>
+    <string name="item_empty">No more %s to be deleted.</string>
+    <string name="alter_add">No more in stock. Please wait for reloading.</string>
+    <string name="btn_reload">RELOAD</string>
+    <string name="nickel_name">NICKEL\n5 cents</string>
+    <string name="dime_name">DIME\n10 cents</string>
+    <string name="quarter_name">QUARTER\n25 cents</string>
+    <string name="alert_nickels">No more nickels are available.</string>
+    <string name="alert_dime">No more dimes are available.</string>
+    <string name="alert_quarter">No more quarters are available.</string>
+    <string name="machine_hint_insert_coin">INSERT COIN</string>
+    <string name="machine_hint_thank_you">THANK YOU</string>
+    <string name="machine_hint_money_required">$%.02f is required.</string>
+    <string name="machine_hint_sold_out">SOLD OUT</string>
+    <string name="btn_dialog_pay">PAY</string>
+    <string name="btn_cash_out">CASH OUT</string>
+    <string name="btn_use_credit">USE CREDIT</string>
+    <string name="alert_btn_confirm">Confirm</string>
+    <string name="alert_btn_reload">Reload</string>
+    <string name="alert_btn_factory_reset">Factory Reset</string>
+    <string name="alert_btn_cancel">Cancel</string>
+    <string name="alert_cash_out">Please confirm to cash out $%.02f.</string>
+    <string name="purchase_hint">ENJOY !</string>
+    <string name="subtitle_action_bar">To simulate a real vending machine</string>
+    <string name="action_bar_machine_spec">Machine Specs</string>
+    <string name="action_bar_factory_reset">Factory Reset</string>
+    <string name="machine_specs_subtitle" formatted="false">Current amount is %d, credit is $%.02f. Selection the reload
+        options.</string>
+    <string name="action_bar_reload_item">RELOAD ITEMS</string>
+    <string name="action_bar_reload_credit">RELOAD CREDITS</string>
+    <string name="factory_reset_title">FACTORY RESET</string>
+    <string name="machine_specs_title">MACHINE SPECS</string>
+    <string name="factory_reset_subtitle">After the \"Factory Reset\", all vending machine specs will be set to
+        the default value.</string>
+    <string name="machine_specs_item_loaded">%d items are loaded.</string>
+    <string name="machine_specs_credit_loaded" formatted="false">$%.02f credits are loaded.</string>
+    <string name="machine_specs_item_credit_loaded" formatted="false">%d items and $%.02f credits are loaded.</string>
+    <string name="machine_specs_no_selection_made">Nothing is changed.</string>
+    <string name="summary_user_credit">User Credit</string>
+</resources>

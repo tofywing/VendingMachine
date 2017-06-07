@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tools:menu xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            tools:context=".VendingMachineActivity">
+
+    <item
+        android:id="@+id/action_bar_selector_reload"
+        android:orderInCategory="101"
+        android:title="@string/action_bar_machine_spec"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_bar_selector_factory_reset"
+        android:orderInCategory="101"
+        android:title="@string/action_bar_factory_reset"
+        app:showAsAction="never"/>
+</tools:menu>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/pureWhite">
+
+    <ImageView
+        android:id="@+id/item_pic"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/cola"
+        tools:ignore="ContentDescription"/>
+
+    <ImageButton
+        android:id="@+id/button_add_item"
+        style="@style/Widget.AppCompat.ImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:srcCompat="@android:drawable/ic_input_add"
+        tools:ignore="ContentDescription"/>
+
+    <ImageButton
+        android:id="@+id/button_delete_item"
+        style="@style/Widget.AppCompat.ImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:srcCompat="@android:drawable/ic_delete"
+        tools:ignore="ContentDescription"/>
+
+    <TextView
+        android:id="@+id/text_price"
+        style="@style/VendingTheme.VendingMachineText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:textAllCaps="true"
+        android:textSize="18sp"
+        tools:ignore="RelativeOverlap"/>
+
+    <TextView
+        android:id="@+id/text_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/text_price"
+        android:textAllCaps="true"
+        android:textSize="18sp"
+        android:textStyle="italic"
+        android:typeface="serif"
+        tools:ignore="RelativeOverlap"/>
+</RelativeLayout>

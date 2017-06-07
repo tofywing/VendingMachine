@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="20dp">
+
+    <TextView
+        android:id="@+id/machine_specs_title"
+        style="@style/VendingTheme.VendingMachineText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/machine_specs_title"
+        android:textStyle="italic"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/machine_specs_subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/machine_specs_title"
+        android:layout_marginTop="20dp"
+        android:text="@string/machine_specs_subtitle"
+        android:textColor="@color/transparentBlack"
+        android:textSize="16sp"
+        android:textStyle="italic"
+        android:typeface="serif"/>
+
+    <CheckBox
+        android:id="@+id/item_reload"
+        style="@style/VendingTheme.VendingMachineText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/machine_specs_subtitle"
+        android:layout_marginTop="20dp"
+        android:buttonTint="@color/azureBlue"
+        android:text="@string/action_bar_reload_item"
+        android:textColor="@color/pureBlack"
+        android:textStyle="italic"
+        android:textSize="20sp"/>
+
+    <CheckBox
+        android:id="@+id/credit_reload"
+        style="@style/VendingTheme.VendingMachineText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/item_reload"
+        android:layout_marginTop="20dp"
+        android:buttonTint="@color/azureBlue"
+        android:text="@string/action_bar_reload_credit"
+        android:textColor="@color/pureBlack"
+        android:textStyle="italic"
+        android:textSize="20sp"/>
+</RelativeLayout>
