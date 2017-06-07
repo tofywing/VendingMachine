@@ -79,7 +79,7 @@ public class VendingMachineFragment extends Fragment {
         mItems = getArguments().getParcelable(TAG_ITEMS);
         mFragmentManager = getChildFragmentManager();
         mUserCredit = (TextView) view.findViewById(R.id.text_credit);
-        mUserCredit.setText(String.format(Locale.US, "Credit: $%.02f", mItems.getUserCreditLeft()));
+        mUserCredit.setText(String.format(Locale.US, "Store Credit: $%.02f", mItems.getUserCreditLeft()));
         mUseCreditButton = (Button) view.findViewById(R.id.btn_use_credit);
         mUseCreditButton.setVisibility(mItems.getUserCreditLeft() > 0 ? View.VISIBLE : View.INVISIBLE);
         mUseCreditButton.setOnClickListener(new View.OnClickListener() {
@@ -101,7 +101,7 @@ public class VendingMachineFragment extends Fragment {
                     mItems.setUserCreditLeft(userCreditLeft - totalCost);
 
                 }
-                mUserCredit.setText(String.format(Locale.US, "Credit: $%.02f", mItems.getUserCreditLeft()));
+                mUserCredit.setText(String.format(Locale.US, "Store Credit: $%.02f", mItems.getUserCreditLeft()));
                 mUseCreditButton.setVisibility(View.INVISIBLE);
                 if (mItems.getUserCreditLeft() == 0) {
                     mCashOut.setVisibility(View.INVISIBLE);
@@ -235,7 +235,7 @@ public class VendingMachineFragment extends Fragment {
                                             }
                                         }
                                     }, 3000);
-                                    mUserCredit.setText(String.format(Locale.US, "Credit: $%.02f", mItems
+                                    mUserCredit.setText(String.format(Locale.US, "Store Credit: $%.02f", mItems
                                             .getUserCreditLeft()));
                                     if (mItems.getUserCreditLeft() > 0) {
                                         mCashOut.setVisibility(View.VISIBLE);
@@ -265,7 +265,7 @@ public class VendingMachineFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         mItems.setUserCreditLeft(0);
-                        mUserCredit.setText(String.format(Locale.US, "Credit: $%.02f", mItems.getUserCreditLeft()));
+                        mUserCredit.setText(String.format(Locale.US, "Store Credit: $%.02f", mItems.getUserCreditLeft()));
                         mCashOut.setVisibility(View.INVISIBLE);
                         dialog.dismiss();
                     }
