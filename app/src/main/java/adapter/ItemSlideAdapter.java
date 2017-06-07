@@ -172,7 +172,9 @@ public class ItemSlideAdapter extends PagerAdapter {
                                 mVendingMachineFragment.mEffect.interrupt();
                                 mRelativeLayout.setBackgroundColor(ContextCompat.getColor(mVendingMachineFragment
                                         .getActivity(), R.color.pureWhite));
-                                mMachineHint.setText(mContext.getString(R.string.machine_hint_insert_coin));
+                                mMachineHint.setText(mItems.getMachineCredit() == 0 ? mContext.getString(R
+                                        .string.machine_hint_exact_change) : mContext.getString(R.string
+                                        .machine_hint_insert_coin));
                                 mVendingMachineFragment.mEffect = new FadeEffect();
                                 mVendingMachineFragment.mEffect.action(3, mMachineHint);
                             }

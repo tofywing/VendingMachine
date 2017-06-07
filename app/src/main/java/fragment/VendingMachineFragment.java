@@ -39,7 +39,7 @@ import static java.lang.Thread.sleep;
 
 public class VendingMachineFragment extends Fragment {
     public static final String TAG = "VendingMachineFragment";
-    public static final String TAG_TRANSFER = "VendingMachineFragmentTransferredData";
+    public static final String TAG_ITEMS = "VendingMachineFragmentTransferredItems";
     public static final String TAG_INSERT_COIN_DIALOG = "VendingMachineFragmentInsertCoinDialog";
 
     Items mItems;
@@ -58,7 +58,7 @@ public class VendingMachineFragment extends Fragment {
 
     public static VendingMachineFragment newInstance(Items items) {
         Bundle args = new Bundle();
-        args.putParcelable(TAG_TRANSFER, items);
+        args.putParcelable(TAG_ITEMS, items);
         VendingMachineFragment fragment = new VendingMachineFragment();
         fragment.setArguments(args);
         return fragment;
@@ -76,26 +76,29 @@ public class VendingMachineFragment extends Fragment {
             savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_vending_machine, container, false);
         mRelativeLayout = (RelativeLayout) view.findViewById(R.id.top_panel_container);
-        mItems = getArguments().getParcelable(TAG_TRANSFER);
+        mItems = getArguments().getParcelable(TAG_ITEMS);
         mFragmentManager = getChildFragmentManager();
         mUserCredit = (TextView) view.findViewById(R.id.text_credit);
         mUserCredit.setText(String.format(Locale.US, "Credit: $%.02f", mItems.getUserCreditLeft()));
         mUseCreditButton = (Button) view.findViewById(R.id.btn_use_credit);
-        mUseCreditButton.setVisibility(mItems.getUserCreditInUsing() > 0 ? View.VISIBLE : View.INVISIBLE);
+        mUseCreditButton.setVisibility(mItems.getUserCreditLeft() > 0 ? View.VISIBLE : View.INVISIBLE);
         mUseCreditButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // is using credit true
                 isUsingCredit = true;
                 double totalCost = mItems.getTotalCost();
-                double userCredit = mItems.getUserCreditLeft();
-                if (totalCost >= userCredit) {
-                    mItems.setTotalCost(totalCost - userCredit);
-                    mItems.setUserCreditInUsing(userCredit);
+                double userCreditLeft = mItems.getUserCreditLeft();
+                if (totalCost >= userCreditLeft) {
+                    //update total cost / unpaid / credit left
+                    mItems.setTotalCost(totalCost - userCreditLeft);
+                    mItems.setUserCreditInUsing(userCreditLeft);
                     mItems.setUserCreditLeft(0);
                 } else {
+                    //update total cost / credit in using / credit left
                     mItems.setTotalCost(0);
-                    mItems.setUserCreditInUsing(userCredit);
-                    mItems.setUserCreditLeft(userCredit - totalCost);
+                    mItems.setUserCreditInUsing(totalCost);
+                    mItems.setUserCreditLeft(userCreditLeft - totalCost);
 
                 }
                 mUserCredit.setText(String.format(Locale.US, "Credit: $%.02f", mItems.getUserCreditLeft()));
@@ -113,86 +116,142 @@ public class VendingMachineFragment extends Fragment {
             @Override
             public void onClick(final View v) {
                 isUsingCredit = false;
-                if (mInsertCoinDialog != null && mInsertCoinDialog.isAdded()) {
-                    mInsertCoinDialog.dismiss();
-                }
-                mInsertCoinDialog = InsertCoinDialog.newInstance(mItems.getTotalCost());
-                mInsertCoinDialog.setCallback(new InsertCoinDialogCallback() {
-                    @Override
-                    public void onDialogCallback(boolean paid, final double spend, final double left) {
-                        final AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-                        if (left == 0) {
-                            builder.setMessage("Purchase item.");
-                        } else if (left > 0) {
-                            builder.setMessage(String.format(Locale.US, "Purchase item. $%.02f is left.", left));
-                        } else {
-                            builder.setMessage(String.format(Locale.US, "Purchase item. $%.02f is owned.", -left));
-                        }
-                        Log.d(TAG, "CreditInUsing" + mItems.getUserCreditInUsing());
-                        builder.setCancelable(false);
-                        builder.setPositiveButton(R.string.alert_btn_confirm, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(final DialogInterface dialog, int which) {
-                                Handler handler = new Handler();
-                                if (left >= 0) {
-                                    mItems.clearUnpaid();
-                                    mItems.addUserCreditLeft(left);
-                                    mItems.addMachineCredit(spend);
-                                    Log.d(TAG, mItems.getMachineCredit() + "");
-                                    dismissItemSummaryFragment();
-                                    mPayButton.setVisibility(View.INVISIBLE);
-                                    mUseCreditButton.setVisibility(View.INVISIBLE);
-                                    mEffect.interrupt();
-                                    mEffect = new FadeEffect();
-                                    dialog.dismiss();
-                                    mMachineHint.setText(getString(R.string.machine_hint_thank_you));
-                                    mRelativeLayout.setBackgroundColor(ContextCompat.getColor(mActivity, R.color
-                                            .azureBlue));
-                                    mEffect.action(1, mMachineHint);
-                                } else {
-                                    mItems.setTotalCost(-left);
-                                    isUsingCredit = true;
-                                    createItemSummaryFragment();
-                                    handler = new Handler();
-                                    mEffect.interrupt();
-                                    mEffect = new FadeEffect();
-                                    mMachineHint.setText(getString(R.string.machine_hint_money_required, -left));
-                                    mRelativeLayout.setBackgroundColor(ContextCompat.getColor(mActivity, R.color
-                                            .lightGreen));
-                                    mEffect.action(1, mMachineHint);
-                                }
-                                handler.postDelayed(new Runnable() {
+                if (mItems.getTotalCost() == 0) {
+                    mItems.clearUnpaid();
+                    mItems.updateTotalCost();
+                    mItems.setUserCreditInUsing(0);
+                    isUsingCredit = false;
+                    dismissItemSummaryFragment();
+                    mPayButton.setVisibility(View.INVISIBLE);
+                    mUseCreditButton.setVisibility(View.INVISIBLE);
+                    mEffect.interrupt();
+                    mEffect = new FadeEffect();
+                    mMachineHint.setText(getString(R.string.machine_hint_thank_you));
+                    mRelativeLayout.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.azureBlue));
+                    mEffect.action(1, mMachineHint);
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Activity activity = getActivity();
+                            if (activity != null) {
+                                getActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Activity activity = getActivity();
-                                        if (activity != null) {
-                                            getActivity().runOnUiThread(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    mEffect.interrupt();
-                                                    mRelativeLayout.setBackgroundColor(ContextCompat.getColor
-                                                            (mActivity, R.color.pureWhite));
-                                                    mMachineHint.setText(getString(R.string.machine_hint_insert_coin));
-                                                    mEffect = new FadeEffect();
-                                                    mEffect.action(3, mMachineHint);
-                                                }
-                                            });
-                                        }
+                                        mEffect.interrupt();
+                                        mRelativeLayout.setBackgroundColor(ContextCompat.getColor
+                                                (mActivity, R.color.pureWhite));
+                                        mMachineHint.setText(mItems.getMachineCredit() == 0 ?
+                                                getString(R.string.machine_hint_exact_change) : getString(R.string
+                                                .machine_hint_insert_coin));
+                                        mEffect = new FadeEffect();
+                                        mEffect.action(3, mMachineHint);
                                     }
-                                }, 3000);
-                                mUserCredit.setText(String.format(Locale.US, "Credit: $%.02f", mItems
-                                        .getUserCreditLeft()));
-                                if (mItems.getUserCreditLeft() > 0) {
-                                    mCashOut.setVisibility(View.VISIBLE);
-                                }
+                                });
                             }
-                        }).show();
+                        }
+                    }, 3000);
+                } else {
+                    if (mInsertCoinDialog != null && mInsertCoinDialog.isAdded()) {
+                        mInsertCoinDialog.dismiss();
                     }
-                });
-                mInsertCoinDialog.show(mFragmentManager, TAG_INSERT_COIN_DIALOG);
+                    mInsertCoinDialog = InsertCoinDialog.newInstance(mItems.getTotalCost(), mItems);
+                    mInsertCoinDialog.setCallback(new InsertCoinDialogCallback() {
+                        @Override
+                        public void onDialogCallback(boolean paid, final double spend, final double left) {
+                            final AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+                            if (left == 0) {
+                                builder.setMessage("Purchase item.");
+                            } else if (left > 0) {
+                                builder.setMessage(String.format(Locale.US, "Purchase item. $%.02f is left.", left));
+                            } else {
+                                builder.setMessage(String.format(Locale.US, "Purchase item. $%.02f is owned.", -left));
+                            }
+                            Log.d(TAG, "CreditInUsing" + mItems.getUserCreditInUsing());
+                            builder.setCancelable(false);
+                            builder.setPositiveButton(R.string.alert_btn_confirm, new DialogInterface.OnClickListener
+                                    () {
+
+                                @Override
+                                public void onClick(final DialogInterface dialog, int which) {
+                                    Handler handler = new Handler();
+                                    // payment finished
+                                    // left >= 0, clearUnpaid, update total cost / add credit left / add machine
+                                    // credit /
+                                    // is using credit = false / set credit in using = 0
+                                    if (left >= 0) {
+                                        mItems.clearUnpaid();
+                                        mItems.updateTotalCost();
+                                        Log.d(TAG, "Total cost after pay: " + mItems.getTotalCost());
+                                        mItems.addUserCreditLeft(left);
+                                        mItems.addMachineCredit(spend);
+                                        Log.d(TAG, mItems.getMachineCredit() + "");
+                                        mItems.setUserCreditInUsing(0);
+                                        isUsingCredit = false;
+                                        dismissItemSummaryFragment();
+                                        mPayButton.setVisibility(View.INVISIBLE);
+                                        mUseCreditButton.setVisibility(View.INVISIBLE);
+                                        mEffect.interrupt();
+                                        mEffect = new FadeEffect();
+                                        dialog.dismiss();
+                                        mMachineHint.setText(getString(R.string.machine_hint_thank_you));
+                                        mRelativeLayout.setBackgroundColor(ContextCompat.getColor(mActivity, R.color
+                                                .azureBlue));
+                                        mEffect.action(1, mMachineHint);
+                                    } else {
+                                        //payment not finished
+                                        // left < 0, set total cost / add machine credit
+                                        mItems.setTotalCost(-left);
+                                        mItems.addMachineCredit(spend);
+                                        createItemSummaryFragment();
+                                        handler = new Handler();
+                                        mEffect.interrupt();
+                                        mEffect = new FadeEffect();
+                                        mMachineHint.setText(getString(R.string.machine_hint_money_required, -left));
+                                        mRelativeLayout.setBackgroundColor(ContextCompat.getColor(mActivity, R.color
+                                                .lightGreen));
+                                        mEffect.action(1, mMachineHint);
+                                    }
+                                    handler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Activity activity = getActivity();
+                                            if (activity != null) {
+                                                getActivity().runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        mEffect.interrupt();
+                                                        mRelativeLayout.setBackgroundColor(ContextCompat.getColor
+                                                                (mActivity, R.color.pureWhite));
+                                                        mMachineHint.setText(mItems.getMachineCredit() == 0 ?
+                                                                getString(R
+                                                                        .string.machine_hint_exact_change) :
+                                                                getString(R.string
+                                                                        .machine_hint_insert_coin));
+                                                        mEffect = new FadeEffect();
+                                                        mEffect.action(3, mMachineHint);
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    }, 3000);
+                                    mUserCredit.setText(String.format(Locale.US, "Credit: $%.02f", mItems
+                                            .getUserCreditLeft()));
+                                    if (mItems.getUserCreditLeft() > 0) {
+                                        mCashOut.setVisibility(View.VISIBLE);
+                                    }
+                                }
+                            }).show();
+                        }
+                    });
+                    mInsertCoinDialog.show(mFragmentManager, TAG_INSERT_COIN_DIALOG);
+                }
             }
         });
         mMachineHint = (TextView) view.findViewById(R.id.text_payment_hint);
+        mMachineHint.setText(mItems.getMachineCredit() == 0 ? getString(R
+                .string.machine_hint_exact_change) : getString(R.string
+                .machine_hint_insert_coin));
         mEffect = new FadeEffect();
         mEffect.action(3, mMachineHint);
         mCashOut = (Button) view.findViewById(R.id.btn_cash_out);

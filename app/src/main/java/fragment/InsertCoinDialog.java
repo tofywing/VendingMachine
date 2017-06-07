@@ -1,12 +1,14 @@
 package fragment;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 import java.util.Locale;
 
 import callback.InsertCoinDialogCallback;
+import model.Items;
 import pillar_technology.vendingmachine.R;
 
 /**
@@ -26,6 +29,7 @@ import pillar_technology.vendingmachine.R;
 public class InsertCoinDialog extends DialogFragment {
     public static final String TAG = "InsertCoinDialog";
     public static final String TAG_TOTAL_COST = "InsertCoinDialogTotalCost";
+    public static final String TAG_ITEMS = "InsertCoinDialogTransferredData";
 
     TextView mTotalCost;
     TextView mTotalSpend;
@@ -45,11 +49,13 @@ public class InsertCoinDialog extends DialogFragment {
     int nickelSpend;
     int dimeSpend;
     int quarterSpend;
+    Items mItems;
     InsertCoinDialogCallback mCallback;
 
-    public static InsertCoinDialog newInstance(double totalCost) {
+    public static InsertCoinDialog newInstance(double totalCost, Items items) {
         Bundle args = new Bundle();
         args.putDouble(TAG_TOTAL_COST, totalCost);
+        args.putParcelable(TAG_ITEMS, items);
         InsertCoinDialog fragment = new InsertCoinDialog();
         fragment.setArguments(args);
         return fragment;
@@ -60,6 +66,7 @@ public class InsertCoinDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final Dialog dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.fragment_insert_coin_dialog);
+        mItems = getArguments().getParcelable(TAG_ITEMS);
         totalCost = getArguments().getDouble(TAG_TOTAL_COST);
         totalSpend = 0;
         nickelSpend = 0;
@@ -151,8 +158,10 @@ public class InsertCoinDialog extends DialogFragment {
         mPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCallback.onDialogCallback(true, totalSpend, totalSpend - totalCost);
-                dismiss();
+                if(payChecking()) {
+                    mCallback.onDialogCallback(true, totalSpend, totalSpend - totalCost);
+                    dismiss();
+                }
             }
         });
         mCancelBtn = (ImageButton) dialog.findViewById(R.id.btn_dialog_cancel);
@@ -167,5 +176,25 @@ public class InsertCoinDialog extends DialogFragment {
 
     public void setCallback(InsertCoinDialogCallback callback) {
         mCallback = callback;
+    }
+
+    private boolean payChecking() {
+        double different = totalSpend - totalCost;
+        boolean noProblem = different <= mItems.getMachineCredit();
+        if (!noProblem) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setMessage(getString(R.string.alert_exact_change, mItems.getMachineCredit()));
+            builder.setPositiveButton(R.string.alert_btn_confirm, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            }).show();
+        }
+        return noProblem;
+    }
+
+    private void deleteChecking() {
+
     }
 }

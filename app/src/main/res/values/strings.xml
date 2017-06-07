@@ -17,6 +17,7 @@
     <string name="alert_quarter">No more quarters are available.</string>
     <string name="machine_hint_insert_coin">INSERT COIN</string>
     <string name="machine_hint_thank_you">THANK YOU</string>
+    <string name="machine_hint_exact_change">EXACT CHANGE ONLY</string>
     <string name="machine_hint_money_required">$%.02f is required.</string>
     <string name="machine_hint_sold_out">SOLD OUT</string>
     <string name="btn_dialog_pay">PAY</string>
@@ -27,6 +28,8 @@
     <string name="alert_btn_factory_reset">Factory Reset</string>
     <string name="alert_btn_cancel">Cancel</string>
     <string name="alert_cash_out">Please confirm to cash out $%.02f.</string>
+    <string name="alert_exact_change">Machine can make no more than $%.02f change now. Lower your insert amount or
+        try exact change.</string>
     <string name="purchase_hint">ENJOY !</string>
     <string name="subtitle_action_bar">To simulate a real vending machine</string>
     <string name="action_bar_machine_spec">Machine Specs</string>
