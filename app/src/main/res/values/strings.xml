@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">VendingMachine</string>
+    <string name="app_name">SimVending</string>
     <string name="item_cola">Cola</string>
     <string name="item_chips">Chips</string>
     <string name="item_candy">Candy</string>
