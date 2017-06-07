@@ -34,8 +34,8 @@
     <string name="subtitle_action_bar">To simulate a real vending machine</string>
     <string name="action_bar_machine_spec">Machine Specs</string>
     <string name="action_bar_factory_reset">Factory Reset</string>
-    <string name="machine_specs_subtitle" formatted="false">Current amount is %d, credit is $%.02f. Selection the reload
-        options.</string>
+    <string name="machine_specs_subtitle" formatted="false">Current items summary is %s. Machine credit is $%.02f.
+        Please select the reload options.</string>
     <string name="action_bar_reload_item">RELOAD ITEMS</string>
     <string name="action_bar_reload_credit">RELOAD CREDITS</string>
     <string name="factory_reset_title">FACTORY RESET</string>

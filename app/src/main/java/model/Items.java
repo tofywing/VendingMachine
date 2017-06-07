@@ -136,5 +136,16 @@ public class Items implements Parcelable {
     public void setUserCreditInUsing(double userCreditInUsing) {
         this.userCreditInUsing = userCreditInUsing;
     }
+
+    public String getItemAmountSummary() {
+        String result = "";
+        int total = 0;
+        for (Item item : items) {
+            total += item.getAmount();
+            result += item.getName() + ": " + item.getAmount() + ", ";
+        }
+        result += total + " in total";
+        return result;
+    }
 }
 

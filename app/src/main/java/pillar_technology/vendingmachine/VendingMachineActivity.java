@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -43,6 +44,7 @@ public class VendingMachineActivity extends AppCompatActivity {
     FragmentManager mFragmentManager;
     CheckBox mItemReload;
     CheckBox mCreditReload;
+    TextView mMachineSpecSubTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,14 +76,14 @@ public class VendingMachineActivity extends AppCompatActivity {
         return items;
     }
 
-    public static Items reloadVendingMachine(Items items) {
+    public static Items reloadVendingMachine(Items items, int amount, double credit) {
         if (items == null) {
             return initialVendingMachine();
         } else {
             for (Item item : items.getItems()) {
-                item.setAmount(item.getAmount() + 30);
+                item.setAmount(item.getAmount() + amount);
             }
-            items.addMachineCredit(50d);
+            items.addMachineCredit(credit);
             return items;
         }
     }
@@ -116,13 +118,17 @@ public class VendingMachineActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_bar_selector_reload) {
+        if (id == R.id.action_bar_machine_spec) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.selector_machine_specs_layout,
                     null);
             builder.setView(view);
             mItemReload = (CheckBox) view.findViewById(R.id.item_reload);
             mCreditReload = (CheckBox) view.findViewById(R.id.credit_reload);
+            mMachineSpecSubTitle = (TextView) view.findViewById(R.id.machine_specs_subtitle);
+            mMachineSpecSubTitle.setText(getString(R.string.machine_specs_subtitle, mItems.getItemAmountSummary(),
+                    mItems
+                            .getMachineCredit()));
             builder.setCancelable(true);
             builder.setPositiveButton(getString(R.string.alert_btn_reload), new DialogInterface.OnClickListener() {
                 @Override
@@ -133,12 +139,14 @@ public class VendingMachineActivity extends AppCompatActivity {
                     } else {
                         if (mItemReload.isChecked() && mCreditReload.isChecked()) {
                             snakeBarString = getString(R.string.machine_specs_item_credit_loaded, 30, 50d);
+                            mItems = VendingMachineActivity.reloadVendingMachine(mItems, 30, 50d);
                         } else if (mItemReload.isChecked()) {
+                            mItems = VendingMachineActivity.reloadVendingMachine(mItems, 30, 0);
                             snakeBarString = getString(R.string.machine_specs_item_loaded, 30);
                         } else if (mCreditReload.isChecked()) {
+                            mItems = VendingMachineActivity.reloadVendingMachine(mItems, 0, 50d);
                             snakeBarString = getString(R.string.machine_specs_credit_loaded, 50d);
                         }
-                        mItems = VendingMachineActivity.reloadVendingMachine(mItems);
                         mVendingMachineFragment = (VendingMachineFragment) mFragmentManager.findFragmentById(R.id
                                 .vending_machine_fragment_container);
                         mVendingMachineFragment.generateUpdateViewPager(mVendingMachineFragment.getView());
