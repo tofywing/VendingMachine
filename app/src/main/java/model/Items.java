@@ -13,8 +13,12 @@ public class Items implements Parcelable {
     private ArrayList<Item> items;
     private double machineCredit;
     private double userCreditLeft;
-    private double totalCost;
-    private double userCreditInUsing;
+    private double totalAmount;
+    private double creditInUse;
+    private double userSpent;
+    private double paymentDue;
+    private boolean isCreditUsed;
+    private boolean isPaymentDue;
 
     public Items() {
         items = new ArrayList<>();
@@ -25,8 +29,12 @@ public class Items implements Parcelable {
         items = in.createTypedArrayList(Item.CREATOR);
         machineCredit = in.readDouble();
         userCreditLeft = in.readDouble();
-        totalCost = in.readDouble();
-        userCreditInUsing = in.readDouble();
+        totalAmount = in.readDouble();
+        creditInUse = in.readDouble();
+        userSpent = in.readDouble();
+        paymentDue = in.readDouble();
+        isCreditUsed = in.readByte() != 0;
+        isPaymentDue = in.readByte() != 0;
     }
 
     public static final Creator<Items> CREATOR = new Creator<Items>() {
@@ -51,8 +59,12 @@ public class Items implements Parcelable {
         dest.writeTypedList(items);
         dest.writeDouble(machineCredit);
         dest.writeDouble(userCreditLeft);
-        dest.writeDouble(totalCost);
-        dest.writeDouble(userCreditInUsing);
+        dest.writeDouble(totalAmount);
+        dest.writeDouble(creditInUse);
+        dest.writeDouble(userSpent);
+        dest.writeDouble(paymentDue);
+        dest.writeByte((byte) (isCreditUsed ? 1 : 0));
+        dest.writeByte((byte) (isPaymentDue ? 1 : 0));
     }
 
     public void reloadItems(ArrayList<Item> items) {
@@ -87,8 +99,24 @@ public class Items implements Parcelable {
         return userCreditLeft;
     }
 
-    public double getUserCreditInUsing() {
-        return userCreditInUsing;
+    public double getCreditInUse() {
+        return creditInUse;
+    }
+
+    public double getUserSpent() {
+        return userSpent;
+    }
+
+    public double getPaymentDue() {
+        return paymentDue;
+    }
+
+    public boolean isCreditUsed() {
+        return isCreditUsed;
+    }
+
+    public boolean isPaymentDue() {
+        return isPaymentDue;
     }
 
     public void updateTotalCost() {
@@ -96,15 +124,15 @@ public class Items implements Parcelable {
         for (Item item : items) {
             totalCost += item.getPrice() * item.getUnpaid();
         }
-        this.totalCost = totalCost;
+        this.totalAmount = totalCost;
     }
 
-    public double getTotalCost() {
-        return totalCost;
+    public double getTotalAmount() {
+        return totalAmount;
     }
 
-    public void addUserCreditInUsing(double userCreditInUsing) {
-        this.userCreditInUsing += userCreditInUsing;
+    public void addCreditInUse(double userCreditInUsing) {
+        this.creditInUse += userCreditInUsing;
     }
 
     public void addUserCreditLeft(double userCreditLeftCredit) {
@@ -115,8 +143,12 @@ public class Items implements Parcelable {
         this.machineCredit = machineCredit;
     }
 
-    public void setTotalCost(double totalCost) {
-        this.totalCost = totalCost;
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public void setUserSpent(double userSpent) {
+        this.userSpent = userSpent;
     }
 
     public void setItem(int position, Item item) {
@@ -133,8 +165,20 @@ public class Items implements Parcelable {
         this.userCreditLeft = userCreditLeft;
     }
 
-    public void setUserCreditInUsing(double userCreditInUsing) {
-        this.userCreditInUsing = userCreditInUsing;
+    public void setCreditInUse(double creditInUse) {
+        this.creditInUse = creditInUse;
+    }
+
+    public void setPaymentDue(double paymentDue) {
+        this.paymentDue = paymentDue;
+    }
+
+    public void setIsCreditUsed(boolean isCreditUsed) {
+        this.isCreditUsed = isCreditUsed;
+    }
+
+    public void setIsPaymentDue(boolean isPaymentDue) {
+        this.isPaymentDue = isPaymentDue;
     }
 
     public String getItemAmountSummary() {

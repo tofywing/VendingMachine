@@ -8,11 +8,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.Locale;
 
 import adapter.ItemSummaryAdapter;
+import adapter.ItemSummaryResultAdapter;
 import model.Items;
 import pillar_technology.vendingmachine.R;
 
@@ -23,17 +25,14 @@ import pillar_technology.vendingmachine.R;
 public class ItemSummaryFragment extends Fragment {
     public static final String TAG = "ItemSummaryFragment";
     public static final String TAG_ITEMS = "SummaryFragmentItemComplex";
-    public static final String TAG_IS_USING_CREDIT = "SummaryFragmentIsUsingCredit";
 
     Items mItems;
-    RecyclerView mRecyclerView;
-    TextView mTotalCost;
-    boolean mIsUsingCredit;
+    RecyclerView mSummaryItemsList;
+    RecyclerView mSummaryResultsList;
 
-    public static ItemSummaryFragment newInstance(Items items, boolean isUsingCredit) {
+    public static ItemSummaryFragment newInstance(Items items) {
         Bundle args = new Bundle();
         args.putParcelable(TAG_ITEMS, items);
-        args.putBoolean(TAG_IS_USING_CREDIT, isUsingCredit);
         ItemSummaryFragment fragment = new ItemSummaryFragment();
         fragment.setArguments(args);
         return fragment;
@@ -45,21 +44,27 @@ public class ItemSummaryFragment extends Fragment {
             savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_items_summary, container, false);
         mItems = getArguments().getParcelable(TAG_ITEMS);
-        mIsUsingCredit = getArguments().getBoolean(TAG_IS_USING_CREDIT);
         assert mItems != null;
-        double totalCost = mItems.getTotalCost();
-        mTotalCost = (TextView) view.findViewById(R.id.total_cost);
-        mTotalCost.setText(String.format(Locale.US, "Total: $%.02f", totalCost));
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.item_summary_list);
-        mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setHasFixedSize(true);
-        setupAdapter();
+        LinearLayoutManager layoutManager1 = new LinearLayoutManager(getActivity());
+        mSummaryResultsList = (RecyclerView) view.findViewById(R.id.summary_result_container);
+        mSummaryResultsList.setLayoutManager(layoutManager1);
+        mSummaryResultsList.setHasFixedSize(true);
+        setupResultsAdapter();
+        LinearLayoutManager layoutManager2 = new LinearLayoutManager(getActivity());
+        mSummaryItemsList = (RecyclerView) view.findViewById(R.id.summary_list);
+        mSummaryItemsList.setLayoutManager(layoutManager2);
+        mSummaryItemsList.setHasFixedSize(true);
+        setupItemsAdapter();
         return view;
     }
 
-    private void setupAdapter() {
-        ItemSummaryAdapter adapter = new ItemSummaryAdapter(getActivity(), mItems, mIsUsingCredit);
-        mRecyclerView.setAdapter(adapter);
+    private void setupItemsAdapter() {
+        ItemSummaryAdapter adapter = new ItemSummaryAdapter(getActivity(), mItems);
+        mSummaryItemsList.setAdapter(adapter);
+    }
+
+    private void setupResultsAdapter() {
+        ItemSummaryResultAdapter adapter = new ItemSummaryResultAdapter(getActivity(), mItems);
+        mSummaryResultsList.setAdapter(adapter);
     }
 }

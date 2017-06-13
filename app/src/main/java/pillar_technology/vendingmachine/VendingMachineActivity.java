@@ -1,24 +1,22 @@
 package pillar_technology.vendingmachine;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Point;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,9 +24,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import adapter.ItemSlideAdapter;
-import fragment.ItemSummaryFragment;
 import fragment.VendingMachineFragment;
+import manager.DisplayAppearanceManager;
 import model.Item;
 import model.Items;
 
@@ -44,14 +41,26 @@ public class VendingMachineActivity extends AppCompatActivity {
     FragmentManager mFragmentManager;
     CheckBox mItemReload;
     CheckBox mCreditReload;
+    TextView mMachineSpecTitle;
     TextView mMachineSpecSubTitle;
+    TextView mFactoryResetTitle;
+    TextView mFactoryResetSub;
+
+    float selectorTitleSize;
+    float selectorSubSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vending_machine);
+        initialScreenAppearance();
+        initialFontSize();
         mPreferences = this.getSharedPreferences(TAG_SHARED_PREFERENCE, Context.MODE_PRIVATE);
-        mItems = getPreferenceData();
+        if (savedInstanceState != null) {
+            mItems = savedInstanceState.getParcelable(TAG_ITEMS_DATA);
+        } else {
+            mItems = getPreferenceData();
+        }
         if (mItems == null) {
             mItems = initialVendingMachine();
         }
@@ -123,12 +132,18 @@ public class VendingMachineActivity extends AppCompatActivity {
             View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.selector_machine_specs_layout,
                     null);
             builder.setView(view);
+            mMachineSpecTitle = (TextView) view.findViewById(R.id.machine_specs_title);
+            mMachineSpecTitle.setTextSize(selectorTitleSize);
             mItemReload = (CheckBox) view.findViewById(R.id.item_reload);
+            mItemReload.setTextSize(selectorTitleSize);
             mCreditReload = (CheckBox) view.findViewById(R.id.credit_reload);
+            mCreditReload.setTextSize(selectorTitleSize);
+            Log.d(TAG, mCreditReload.getTextSize() + " ");
             mMachineSpecSubTitle = (TextView) view.findViewById(R.id.machine_specs_subtitle);
+            mMachineSpecSubTitle.setTextSize(selectorSubSize);
+            Log.d(TAG, mMachineSpecSubTitle.getTextSize() + " ");
             mMachineSpecSubTitle.setText(getString(R.string.machine_specs_subtitle, mItems.getItemAmountSummary(),
-                    mItems
-                            .getMachineCredit()));
+                    mItems.getMachineCredit()));
             builder.setCancelable(true);
             builder.setPositiveButton(getString(R.string.alert_btn_reload), new DialogInterface.OnClickListener() {
                 @Override
@@ -167,8 +182,14 @@ public class VendingMachineActivity extends AppCompatActivity {
         }
         if (id == R.id.action_bar_selector_factory_reset) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.selector_factory_reset_layout,
+                    null);
+            builder.setView(view);
+            mFactoryResetTitle = (TextView) view.findViewById(R.id.factory_reset_title);
+            mFactoryResetTitle.setTextSize(selectorTitleSize);
+            mFactoryResetSub = (TextView) view.findViewById(R.id.factory_reset_subtitle);
+            mFactoryResetSub.setTextSize(selectorSubSize);
             builder.setCancelable(true);
-            builder.setView(R.layout.selector_factory_reset_layout);
             builder.setPositiveButton(getString(R.string.alert_btn_factory_reset), new DialogInterface
                     .OnClickListener() {
                 @Override
@@ -197,5 +218,27 @@ public class VendingMachineActivity extends AppCompatActivity {
         mVendingMachineFragment = VendingMachineFragment.newInstance(mItems);
         mFragmentManager.beginTransaction().add(R.id.vending_machine_fragment_container, mVendingMachineFragment)
                 .commit();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(TAG_ITEMS_DATA, mItems);
+    }
+
+    private void initialScreenAppearance() {
+        DisplayAppearanceManager displayManager = new DisplayAppearanceManager(this);
+        displayManager.initializeDisplayAppearance();
+        if (displayManager.getTitleFontSize() == -1) {
+            Display display = getWindowManager().getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+            displayManager.setupDisplayAppearance(display);
+        }
+    }
+
+    private void initialFontSize() {
+        selectorTitleSize = DisplayAppearanceManager.selectorTitleSize;
+        selectorSubSize = DisplayAppearanceManager.selectorSubSize;
     }
 }

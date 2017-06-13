@@ -15,9 +15,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Locale;
 
+import manager.DisplayAppearanceManager;
 import model.Item;
 import model.Items;
 import fragment.ItemSummaryFragment;
@@ -44,18 +46,22 @@ public class ItemSlideAdapter extends PagerAdapter {
     private RelativeLayout mRelativeLayout;
     private Button mPayButton;
     private Button mUseCredit;
-    private boolean mIsUsingCredit;
+    private float titleFontSize;
+    private float restFontSize;
 
-    public ItemSlideAdapter(Context context, Items items, VendingMachineFragment fragment, boolean isUsingCredit) {
+    public ItemSlideAdapter(Context context, Items items, VendingMachineFragment fragment) {
+        initialFontSize();
         mContext = context;
         mVendingMachineFragment = fragment;
-        mIsUsingCredit = isUsingCredit;
         if (mVendingMachineFragment != null) {
             View view = mVendingMachineFragment.getView();
             assert view != null;
             mMachineHint = (TextView) view.findViewById(R.id.text_payment_hint);
+            mMachineHint.setTextSize(titleFontSize);
             mPayButton = (Button) view.findViewById(R.id.btn_pay);
+            mPayButton.setTextSize(restFontSize);
             mUseCredit = (Button) view.findViewById(R.id.btn_use_credit);
+            mUseCredit.setTextSize(restFontSize);
             mRelativeLayout = (RelativeLayout) view.findViewById(R.id.top_panel_container);
             mFragmentManager = fragment.getChildFragmentManager();
         }
@@ -81,8 +87,10 @@ public class ItemSlideAdapter extends PagerAdapter {
         itemImage.setImageResource(item.getImageSrc());
         ImageView addButton = (ImageView) view.findViewById(R.id.button_add_item);
         TextView itemPrice = (TextView) view.findViewById(R.id.text_price);
+        itemPrice.setTextSize(restFontSize);
         itemPrice.setText(String.format(Locale.US, "Price: $%.02f", item.getPrice()));
         final TextView itemAmount = (TextView) view.findViewById(R.id.text_amount);
+        itemAmount.setTextSize(restFontSize);
         itemAmount.setText(String.format(Locale.US, "Amount: %d", item.getAmount()));
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,11 +119,11 @@ public class ItemSlideAdapter extends PagerAdapter {
                         itemAmount.setText(String.format(Locale.US, "Amount: %d", item.getAmount()));
                         mItems.setItem(position, item);
                         mItems.updateTotalCost();
-                        Log.d(TAG, mItems.getTotalCost() + "");
+                        Log.d(TAG, mItems.getTotalAmount() + "");
                         createItemSummaryFragment();
                     }
                     if (unpaid == 0) {
-                        if (mItems.getTotalCost() == 0) {
+                        if (mItems.getTotalAmount() == 0) {
                             if (mItemSummaryFragment != null) {
                                 mFragmentManager.beginTransaction().remove(mItemSummaryFragment)
                                         .commitAllowingStateLoss();
@@ -123,8 +131,8 @@ public class ItemSlideAdapter extends PagerAdapter {
                             }
                             mPayButton.setVisibility(View.INVISIBLE);
                             mUseCredit.setVisibility(View.INVISIBLE);
-                            if (mIsUsingCredit) {
-                                mItems.addUserCreditLeft(mItems.getUserCreditInUsing());
+                            if (mItems.isCreditUsed()) {
+                                mItems.addUserCreditLeft(mItems.getCreditInUse());
                             }
                         }
                     }
@@ -142,12 +150,12 @@ public class ItemSlideAdapter extends PagerAdapter {
     }
 
     private void createItemSummaryFragment() {
-        mItemSummaryFragment = (ItemSummaryFragment) mFragmentManager.findFragmentById(R.id.item_summary_container);
+        mItemSummaryFragment = (ItemSummaryFragment) mFragmentManager.findFragmentById(R.id.summary_container);
         if (mItemSummaryFragment != null) {
             mFragmentManager.beginTransaction().remove(mItemSummaryFragment).commitAllowingStateLoss();
         }
-        mItemSummaryFragment = ItemSummaryFragment.newInstance(mItems, mIsUsingCredit);
-        mFragmentManager.beginTransaction().add(R.id.item_summary_container, mItemSummaryFragment).commit();
+        mItemSummaryFragment = ItemSummaryFragment.newInstance(mItems);
+        mFragmentManager.beginTransaction().add(R.id.summary_container, mItemSummaryFragment).commit();
     }
 
     private void itemsAddAction(int position, View v, TextView itemAmount) {
@@ -193,5 +201,10 @@ public class ItemSlideAdapter extends PagerAdapter {
             mItems.updateTotalCost();
             createItemSummaryFragment();
         }
+    }
+
+    private void initialFontSize() {
+        titleFontSize = DisplayAppearanceManager.titleFontSize;
+        restFontSize = DisplayAppearanceManager.subFontSize;
     }
 }

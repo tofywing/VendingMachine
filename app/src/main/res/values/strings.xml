@@ -28,8 +28,10 @@
     <string name="alert_btn_factory_reset">Factory Reset</string>
     <string name="alert_btn_cancel">Cancel</string>
     <string name="alert_cash_out">Please confirm to cash out $%.02f.</string>
-    <string name="alert_exact_change">Machine can make no more than $%.02f change now. Lower your insert amount or
-        try exact change.</string>
+    <string name="alert_exact_change">Machine can make no more than $%.02f change now. Lower your insert amount ortry exact change.</string>
+    <string name="alert_message_over_paid">Item purchased. $%.02f is overpaid and will be put into the store credit. Please click \"CASH OUT\" button to withdraw.</string>
+    <string name="alert_message_paid">Item purchased.</string>
+    <string name="alert_message_due_payment">The due payment is $%.02f.</string>
     <string name="purchase_hint">ENJOY !</string>
     <string name="subtitle_action_bar">To simulate a real vending machine</string>
     <string name="action_bar_machine_spec">Machine Specs</string>
@@ -46,5 +48,13 @@
     <string name="machine_specs_credit_loaded" formatted="false">$%.02f credits are loaded.</string>
     <string name="machine_specs_item_credit_loaded" formatted="false">%d items and $%.02f credits are loaded.</string>
     <string name="machine_specs_no_selection_made">Nothing is changed.</string>
-    <string name="summary_user_credit">User Credit</string>
+    <string name="summary_user_credit">Credit</string>
+    <string name="summary_title_item">Item:</string>
+    <string name="summary_title_qty">Qty:</string>
+    <string name="summary_title_amount">Amount:</string>
+    <string name="summary_title_price">Price:</string>
+    <string name="summary_result_credit_use">Credit use:</string>
+    <string name="summary_result_total_amount">Total amount:</string>
+    <string name="summary_result_total_payment">Total payment:</string>
+    <string name="summary_result_amount_due">Amount due:</string>
 </resources>

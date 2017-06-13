@@ -10,7 +10,7 @@
         android:id="@+id/item_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.25"
+        android:layout_weight="0.24"
         android:textAllCaps="true"
         android:textStyle="italic"
         android:typeface="serif"/>
@@ -19,7 +19,7 @@
         android:id="@+id/item_price"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.25"
+        android:layout_weight="0.24"
         android:textAllCaps="true"
         android:textStyle="italic"
         android:typeface="serif"/>
@@ -28,7 +28,7 @@
         android:id="@+id/item_count"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.25"
+        android:layout_weight="0.24"
         android:textAllCaps="true"
         android:textStyle="italic"
         android:typeface="serif"/>
@@ -37,7 +37,7 @@
         android:id="@+id/item_amount"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.25"
+        android:layout_weight="0.28"
         android:textAllCaps="true"
         android:textStyle="italic"
         android:typeface="serif"/>

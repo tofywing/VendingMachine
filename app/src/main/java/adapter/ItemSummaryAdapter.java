@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import java.util.Locale;
 
+import manager.DisplayAppearanceManager;
 import model.Item;
 import model.Items;
 import pillar_technology.vendingmachine.R;
@@ -20,12 +21,13 @@ import pillar_technology.vendingmachine.R;
 public class ItemSummaryAdapter extends RecyclerView.Adapter<ItemSummaryAdapter.ItemHolder> {
     private Context mContext;
     private Items mItems;
-    boolean mIsUsingCredit;
+    private float titleFontSize;
+    private float restFontSize;
 
-    public ItemSummaryAdapter(Context context, Items items, boolean useCredit) {
+    public ItemSummaryAdapter(Context context, Items items) {
+        initialFontSize();
         mContext = context;
         mItems = items;
-        mIsUsingCredit = useCredit;
     }
 
     @Override
@@ -36,32 +38,49 @@ public class ItemSummaryAdapter extends RecyclerView.Adapter<ItemSummaryAdapter.
 
     @Override
     public void onBindViewHolder(ItemHolder holder, int position) {
-        //last position of the items
-        if (position == mItems.getCount()) {
-            holder.mItemName.setText(R.string.summary_user_credit);
-            double creditInUsing = mItems.getUserCreditInUsing();
-            holder.mItemCount.setText(String.format(Locale.US, "- $%.02f", creditInUsing));
-        } else {
-            Item item = mItems.get(position);
+        //First position of the items
+        if (position == 0) {
+            holder.mItemName.setText(R.string.summary_title_item);
+            holder.mItemQty.setText(R.string.summary_title_qty);
+            holder.mItemAmount.setText(R.string.summary_title_amount);
+            holder.mItemPrice.setText(R.string.summary_title_price);
+            //Last position of the items
+        }  else {
+            Item item = mItems.get(position - 1);
             holder.mItemName.setText(item.getName());
-            holder.mItemCount.setText(String.format(Locale.US, "x %d", item.getUnpaid()));
+            holder.mItemQty.setText(String.format(Locale.US, "%d", item.getUnpaid()));
+            holder.mItemAmount.setText(String.format(Locale.US, "$%.02f", item.getUnpaid() * item.getPrice()));
+            holder.mItemPrice.setText(String.format(Locale.US, "$%.02f", item.getPrice()));
         }
     }
 
     @Override
     public int getItemCount() {
-        return mIsUsingCredit ? mItems.getCount() + 1 : mItems.getCount();
+        return mItems.getCount() + 1;
     }
 
     class ItemHolder extends RecyclerView.ViewHolder {
-        TextView mItemCount;
+        TextView mItemQty;
         TextView mItemName;
+        TextView mItemAmount;
+        TextView mItemPrice;
 
         ItemHolder(View itemView) {
             super(itemView);
             mContext = itemView.getContext();
-            mItemCount = (TextView) itemView.findViewById(R.id.item_count);
+            mItemQty = (TextView) itemView.findViewById(R.id.item_count);
+            mItemQty.setTextSize(restFontSize);
             mItemName = (TextView) itemView.findViewById(R.id.item_name);
+            mItemName.setTextSize(restFontSize);
+            mItemAmount = (TextView) itemView.findViewById(R.id.item_amount);
+            mItemAmount.setTextSize(restFontSize);
+            mItemPrice = (TextView) itemView.findViewById(R.id.item_price);
+            mItemPrice.setTextSize(restFontSize);
         }
+    }
+
+    private void initialFontSize() {
+        titleFontSize = DisplayAppearanceManager.titleFontSize;
+        restFontSize = DisplayAppearanceManager.subFontSize;
     }
 }

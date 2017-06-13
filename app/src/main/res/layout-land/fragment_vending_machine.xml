@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/pureWhite"
+              android:orientation="horizontal"
+              android:padding="10dp">
+
+    <RelativeLayout
+        android:id="@+id/top_panel_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.60">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/text_payment_hint"
+                style="@style/VendingTheme.VendingMachineText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/machine_hint_insert_coin"
+                android:textAlignment="center"/>
+
+            <View
+                android:id="@+id/top_panel_sub_line"
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:background="@color/transparentBlack"
+                android:paddingTop="10dp"/>
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/item_slide_container"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.45"
+                android:padding="10dp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:background="@color/transparentBlack"/>
+
+            <RelativeLayout
+                android:id="@+id/store_credit_panel"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.20">
+
+                <TextView
+                    android:id="@+id/text_credit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:textAllCaps="true"
+                    android:textStyle="italic"
+                    android:typeface="serif"/>
+
+                <Button
+                    android:id="@+id/btn_cash_out"
+                    style="@style/VendingTheme.VendingMachineText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/btn_cash_out"
+                    android:textColor="@color/pureWhite"
+                    tools:ignore="RelativeOverlap"/>
+            </RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+
+    <View
+        android:layout_width="0.1dp"
+        android:layout_height="match_parent"
+        android:background="@color/transparentBlack"/>
+
+    <ScrollView
+        android:id="@+id/sub_panel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.65"
+        android:baselineAligned="false"
+        android:paddingTop="10dp">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <FrameLayout
+                android:id="@+id/summary_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"/>
+
+            <Button
+                android:id="@+id/btn_pay"
+                style="@style/VendingTheme.VendingMachineText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@id/summary_container"
+                android:backgroundTint="@color/azureBlue"
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp"
+                android:text="@string/btn_dialog_pay"
+                android:textColor="@color/pureWhite"
+                android:textSize="18sp"
+                android:visibility="invisible"/>
+
+            <Button
+                android:id="@+id/btn_use_credit"
+                style="@style/VendingTheme.VendingMachineText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/btn_pay"
+                android:layout_toStartOf="@id/btn_pay"
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp"
+                android:paddingTop="10dp"
+                android:text="@string/btn_use_credit"
+                android:textColor="@color/pureWhite"
+                android:textSize="18sp"
+                android:visibility="invisible"/>
+        </RelativeLayout>
+    </ScrollView>
+</LinearLayout>

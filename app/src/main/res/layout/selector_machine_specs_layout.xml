@@ -10,8 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/machine_specs_title"
-        android:textStyle="italic"
-        android:textSize="20sp"/>
+        android:textStyle="italic"/>
 
     <TextView
         android:id="@+id/machine_specs_subtitle"
@@ -21,7 +20,6 @@
         android:layout_marginTop="20dp"
         android:text="@string/machine_specs_subtitle"
         android:textColor="@color/transparentBlack"
-        android:textSize="16sp"
         android:textStyle="italic"
         android:typeface="serif"/>
 
@@ -35,8 +33,7 @@
         android:buttonTint="@color/azureBlue"
         android:text="@string/action_bar_reload_item"
         android:textColor="@color/pureBlack"
-        android:textStyle="italic"
-        android:textSize="20sp"/>
+        android:textStyle="italic"/>
 
     <CheckBox
         android:id="@+id/credit_reload"
@@ -48,6 +45,5 @@
         android:buttonTint="@color/azureBlue"
         android:text="@string/action_bar_reload_credit"
         android:textColor="@color/pureBlack"
-        android:textStyle="italic"
-        android:textSize="20sp"/>
+        android:textStyle="italic"/>
 </RelativeLayout>

@@ -4,7 +4,7 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="10dp">
+    android:padding="10dp">
 
     <TextView
         android:id="@+id/dialog_total_cost"
@@ -61,19 +61,20 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="@string/nickel_name"
-                android:textAlignment="center"
                 android:textStyle="bold"
-                android:typeface="serif"/>
+                android:typeface="serif"
+                android:textAlignment="center"/>
 
             <ImageView
                 android:id="@+id/nickel_pic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/nickels"
-                android:background="?attr/selectableItemBackgroundBorderless"
                 android:paddingTop="10dp"
                 android:src="@drawable/nickel"
-                tools:ignore="ContentDescription"/>
+                tools:ignore="ContentDescription"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_centerInParent="true"/>
 
             <TextView
                 android:id="@+id/nickel_count"
@@ -91,9 +92,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentStart="true"
-                android:background="?attr/selectableItemBackgroundBorderless"
                 app:srcCompat="@android:drawable/arrow_up_float"
-                tools:ignore="ContentDescription"/>
+                tools:ignore="ContentDescription"
+                android:background="?attr/selectableItemBackgroundBorderless"/>
 
             <ImageButton
                 android:id="@+id/nickels_down"
@@ -101,9 +102,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
-                android:background="?attr/selectableItemBackgroundBorderless"
                 app:srcCompat="@android:drawable/arrow_down_float"
-                tools:ignore="ContentDescription"/>
+                tools:ignore="ContentDescription"
+                android:background="?attr/selectableItemBackgroundBorderless"/>
         </RelativeLayout>
 
         <View
@@ -117,8 +118,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:paddingEnd="5dp"
-            android:paddingStart="5dp">
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp">
 
             <TextView
                 android:id="@+id/dime"
@@ -126,20 +127,20 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="@string/dime_name"
-                android:textAlignment="center"
                 android:textStyle="bold"
-                android:typeface="serif"/>
+                android:typeface="serif"
+                android:textAlignment="center"/>
 
             <ImageView
                 android:id="@+id/dime_pic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/dime"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:foregroundGravity="center_vertical"
                 android:paddingTop="10dp"
                 android:src="@drawable/dime"
-                tools:ignore="ContentDescription"/>
+                tools:ignore="ContentDescription"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_centerVertical="true"/>
 
             <TextView
                 android:id="@+id/dime_count"
@@ -157,9 +158,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentStart="true"
-                android:background="?attr/selectableItemBackgroundBorderless"
                 app:srcCompat="@android:drawable/arrow_up_float"
-                tools:ignore="ContentDescription"/>
+                tools:ignore="ContentDescription"
+                android:background="?attr/selectableItemBackgroundBorderless"/>
 
             <ImageButton
                 android:id="@+id/dime_down"
@@ -167,9 +168,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
-                android:background="?attr/selectableItemBackgroundBorderless"
                 app:srcCompat="@android:drawable/arrow_down_float"
-                tools:ignore="ContentDescription"/>
+                tools:ignore="ContentDescription"
+                android:background="?attr/selectableItemBackgroundBorderless"/>
         </RelativeLayout>
 
         <View
@@ -183,8 +184,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:paddingEnd="0dp"
-            android:paddingStart="5dp">
+            android:paddingStart="5dp"
+            android:paddingEnd="0dp">
 
             <TextView
                 android:id="@+id/quarter"
@@ -192,20 +193,21 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="@string/quarter_name"
-                android:textAlignment="center"
                 android:textStyle="bold"
-                android:typeface="serif"/>
+                android:typeface="serif"
+                android:textAlignment="center"/>
 
             <ImageView
                 android:id="@+id/quarter_pic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/quarter"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:foregroundGravity="center_vertical"
                 android:paddingTop="10dp"
+                android:foregroundGravity="center_vertical"
                 android:src="@drawable/quarter"
-                tools:ignore="ContentDescription"/>
+                tools:ignore="ContentDescription"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_centerVertical="true"/>
 
             <TextView
                 android:id="@+id/quarter_count"
@@ -223,9 +225,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentStart="true"
-                android:background="?attr/selectableItemBackgroundBorderless"
                 app:srcCompat="@android:drawable/arrow_up_float"
-                tools:ignore="ContentDescription"/>
+                tools:ignore="ContentDescription"
+                android:background="?attr/selectableItemBackgroundBorderless"/>
 
             <ImageButton
                 android:id="@+id/quarter_down"
@@ -233,9 +235,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
-                android:background="?attr/selectableItemBackgroundBorderless"
                 app:srcCompat="@android:drawable/arrow_down_float"
-                tools:ignore="ContentDescription"/>
+                tools:ignore="ContentDescription"
+                android:background="?attr/selectableItemBackgroundBorderless"/>
         </RelativeLayout>
     </LinearLayout>
 
@@ -245,7 +247,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:background="?attr/selectableItemBackgroundBorderless"
         app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
+        android:background="?attr/selectableItemBackgroundBorderless"
         tools:ignore="ContentDescription"/>
 </RelativeLayout>
