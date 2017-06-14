@@ -81,7 +81,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/nickel_pic"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
                 android:textStyle="bold"
                 android:typeface="serif"/>
 
@@ -89,9 +88,10 @@
                 android:id="@+id/nickels_up"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentStart="true"
+                android:layout_above="@id/nickel_count"
+                android:layout_centerHorizontal="true"
                 android:background="?attr/selectableItemBackgroundBorderless"
+                android:paddingBottom="10dp"
                 app:srcCompat="@android:drawable/arrow_up_float"
                 tools:ignore="ContentDescription"/>
 
@@ -99,9 +99,10 @@
                 android:id="@+id/nickels_down"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
+                android:layout_below="@id/nickel_count"
+                android:layout_centerHorizontal="true"
                 android:background="?attr/selectableItemBackgroundBorderless"
+                android:paddingTop="10dp"
                 app:srcCompat="@android:drawable/arrow_down_float"
                 tools:ignore="ContentDescription"/>
         </RelativeLayout>
@@ -147,7 +148,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/dime_pic"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
                 android:textStyle="bold"
                 android:typeface="serif"/>
 
@@ -155,9 +155,10 @@
                 android:id="@+id/dime_up"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentStart="true"
+                android:layout_above="@id/dime_count"
+                android:layout_centerHorizontal="true"
                 android:background="?attr/selectableItemBackgroundBorderless"
+                android:paddingBottom="10dp"
                 app:srcCompat="@android:drawable/arrow_up_float"
                 tools:ignore="ContentDescription"/>
 
@@ -165,9 +166,10 @@
                 android:id="@+id/dime_down"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
+                android:layout_below="@id/dime_count"
+                android:layout_centerHorizontal="true"
                 android:background="?attr/selectableItemBackgroundBorderless"
+                android:paddingTop="10dp"
                 app:srcCompat="@android:drawable/arrow_down_float"
                 tools:ignore="ContentDescription"/>
         </RelativeLayout>
@@ -213,7 +215,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/quarter_pic"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
                 android:textStyle="bold"
                 android:typeface="serif"/>
 
@@ -221,9 +222,10 @@
                 android:id="@+id/quarter_up"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentStart="true"
+                android:layout_above="@id/quarter_count"
+                android:layout_centerHorizontal="true"
                 android:background="?attr/selectableItemBackgroundBorderless"
+                android:paddingBottom="10dp"
                 app:srcCompat="@android:drawable/arrow_up_float"
                 tools:ignore="ContentDescription"/>
 
@@ -231,9 +233,10 @@
                 android:id="@+id/quarter_down"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
+                android:layout_below="@id/quarter_count"
+                android:layout_centerHorizontal="true"
                 android:background="?attr/selectableItemBackgroundBorderless"
+                android:paddingTop="10dp"
                 app:srcCompat="@android:drawable/arrow_down_float"
                 tools:ignore="ContentDescription"/>
         </RelativeLayout>

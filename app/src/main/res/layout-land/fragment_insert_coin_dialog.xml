@@ -70,7 +70,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/nickels"
-                android:paddingTop="10dp"
                 android:src="@drawable/nickel"
                 tools:ignore="ContentDescription"
                 android:background="?attr/selectableItemBackgroundBorderless"
@@ -80,9 +79,8 @@
                 android:id="@+id/nickel_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/nickel_pic"
+                android:layout_below="@id/nickels"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
                 android:textStyle="bold"
                 android:typeface="serif"/>
 
@@ -136,7 +134,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/dime"
-                android:paddingTop="10dp"
                 android:src="@drawable/dime"
                 tools:ignore="ContentDescription"
                 android:background="?attr/selectableItemBackgroundBorderless"
@@ -146,11 +143,10 @@
                 android:id="@+id/dime_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/dime_pic"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
                 android:textStyle="bold"
-                android:typeface="serif"/>
+                android:typeface="serif"
+                android:layout_below="@id/dime"/>
 
             <ImageButton
                 android:id="@+id/dime_up"
@@ -213,9 +209,8 @@
                 android:id="@+id/quarter_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/quarter_pic"
+                android:layout_below="@id/quarter"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
                 android:textStyle="bold"
                 android:typeface="serif"/>
 
