@@ -15,7 +15,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Locale;
 
@@ -88,7 +87,7 @@ public class ItemSlideAdapter extends PagerAdapter {
         ImageView addButton = (ImageView) view.findViewById(R.id.button_add_item);
         TextView itemPrice = (TextView) view.findViewById(R.id.text_price);
         itemPrice.setTextSize(restFontSize);
-        itemPrice.setText(String.format(Locale.US, "Price: $%.02f", item.getPrice()));
+        itemPrice.setText(String.format(Locale.US, "Price: $%.02f", item.getPrice()/100f));
         final TextView itemAmount = (TextView) view.findViewById(R.id.text_amount);
         itemAmount.setTextSize(restFontSize);
         itemAmount.setText(String.format(Locale.US, "Amount: %d", item.getAmount()));
@@ -118,7 +117,7 @@ public class ItemSlideAdapter extends PagerAdapter {
                         item.setUnpaid(--unpaid);
                         itemAmount.setText(String.format(Locale.US, "Amount: %d", item.getAmount()));
                         mItems.setItem(position, item);
-                        mItems.updateTotalCost();
+                        mItems.updateTotalAmount();
                         Log.d(TAG, mItems.getTotalAmount() + "");
                         createItemSummaryFragment();
                     }
@@ -198,7 +197,7 @@ public class ItemSlideAdapter extends PagerAdapter {
             item.setAmount(item.getAmount() - 1);
             item.setUnpaid(item.getUnpaid() + 1);
             itemAmount.setText(String.format(Locale.US, "Amount: %d", item.getAmount()));
-            mItems.updateTotalCost();
+            mItems.updateTotalAmount();
             createItemSummaryFragment();
         }
     }

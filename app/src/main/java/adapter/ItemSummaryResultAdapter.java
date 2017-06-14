@@ -61,13 +61,13 @@ public class ItemSummaryResultAdapter extends RecyclerView.Adapter<ItemSummaryRe
             resultsDataSet = new LinkedHashMap<>();
             if (mItems != null) {
                 resultsDataSet.put(R.string.summary_result_credit_use, String.format(Locale.US, "-$%.02f", mItems
-                        .getCreditInUse()));
+                        .getCreditInUse() / 100f));
                 resultsDataSet.put(R.string.summary_result_total_amount, String.format(Locale.US, "$%.02f", mItems
-                        .getTotalAmount()));
+                        .getTotalAmount() / 100f));
                 resultsDataSet.put(R.string.summary_result_total_payment, String.format(Locale.US, "-$%.02f", mItems
-                        .getUserSpent()));
+                        .getUserSpent() / 100f));
                 resultsDataSet.put(R.string.summary_result_amount_due, String.format(Locale.US, "$%.02f", mItems
-                        .getPaymentDue()));
+                        .getPaymentDue() / 100f));
                 mKeys = new ArrayList<>(resultsDataSet.keySet());
             }
             return 4;
@@ -77,9 +77,9 @@ public class ItemSummaryResultAdapter extends RecyclerView.Adapter<ItemSummaryRe
             resultsDataSet = new LinkedHashMap<>();
             if (mItems != null) {
                 resultsDataSet.put(R.string.summary_result_credit_use, String.format(Locale.US, "-$%.02f", mItems
-                        .getCreditInUse()));
+                        .getCreditInUse() / 100f));
                 resultsDataSet.put(R.string.summary_result_total_amount, String.format(Locale.US, "$%.02f", mItems
-                        .getTotalAmount()));
+                        .getTotalAmount() / 100f));
                 mKeys = new ArrayList<>(resultsDataSet.keySet());
             }
             return 2;
@@ -89,11 +89,11 @@ public class ItemSummaryResultAdapter extends RecyclerView.Adapter<ItemSummaryRe
             resultsDataSet = new LinkedHashMap<>();
             if (mItems != null) {
                 resultsDataSet.put(R.string.summary_result_total_amount, String.format(Locale.US, "$%.02f", mItems
-                        .getTotalAmount()));
+                        .getTotalAmount() / 100f));
                 resultsDataSet.put(R.string.summary_result_total_payment, String.format(Locale.US, "-$%.02f", mItems
-                        .getUserSpent()));
+                        .getUserSpent() / 100f));
                 resultsDataSet.put(R.string.summary_result_amount_due, String.format(Locale.US, "$%.02f", mItems
-                        .getPaymentDue()));
+                        .getPaymentDue() / 100f));
                 mKeys = new ArrayList<>(resultsDataSet.keySet());
             }
             return 3;
@@ -103,7 +103,7 @@ public class ItemSummaryResultAdapter extends RecyclerView.Adapter<ItemSummaryRe
             resultsDataSet = new LinkedHashMap<>();
             if (mItems != null) {
                 resultsDataSet.put(R.string.summary_result_total_amount, String.format(Locale.US, "$%.02f", mItems
-                        .getTotalAmount()));
+                        .getTotalAmount() / 100f));
                 mKeys = new ArrayList<>(resultsDataSet.keySet());
             }
             return 1;

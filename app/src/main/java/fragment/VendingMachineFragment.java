@@ -3,7 +3,6 @@ package fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -19,7 +18,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Locale;
 
@@ -31,7 +29,6 @@ import pillar_technology.vendingmachine.R;
 import tools.FadeEffect;
 
 import static java.lang.Thread.sleep;
-import static pillar_technology.vendingmachine.VendingMachineActivity.TAG_SHARED_PREFERENCE;
 
 /**
  * Created by Yee on 5/29/17.
@@ -82,7 +79,7 @@ public class VendingMachineFragment extends Fragment {
         mFragmentManager = getChildFragmentManager();
         mUserCredit = (TextView) view.findViewById(R.id.text_credit);
         mUserCredit.setTextSize(restFontSize);
-        mUserCredit.setText(String.format(Locale.US, "Store Credit: $%.02f", mItems.getUserCreditLeft()));
+        mUserCredit.setText(String.format(Locale.US, "Store Credit: $%.02f", mItems.getUserCreditLeft() / 100f));
         mUseCreditButton = (Button) view.findViewById(R.id.btn_use_credit);
         mUseCreditButton.setTextSize(restFontSize);
         mUseCreditButton.setVisibility(mItems.getUserCreditLeft() > 0 && mItems.getTotalAmount() > 0 ? View.VISIBLE :
@@ -92,8 +89,8 @@ public class VendingMachineFragment extends Fragment {
             public void onClick(View v) {
                 // is using credit true
                 mItems.setIsCreditUsed(true);
-                double totalCost = mItems.getTotalAmount();
-                double userCreditLeft = mItems.getUserCreditLeft();
+                int totalCost = mItems.getTotalAmount();
+                int userCreditLeft = mItems.getUserCreditLeft();
                 if (totalCost >= userCreditLeft) {
                     //update total cost / unpaid / credit left
                     mItems.setTotalAmount(totalCost - userCreditLeft);
@@ -105,7 +102,8 @@ public class VendingMachineFragment extends Fragment {
                     mItems.setCreditInUse(totalCost);
                     mItems.setUserCreditLeft(userCreditLeft - totalCost);
                 }
-                mUserCredit.setText(String.format(Locale.US, "Store Credit: $%.02f", mItems.getUserCreditLeft()));
+                mUserCredit.setText(String.format(Locale.US, "Store Credit: $%.02f", mItems.getUserCreditLeft
+                        () / 100f));
                 mUseCreditButton.setVisibility(View.INVISIBLE);
                 if (mItems.getUserCreditLeft() == 0) {
                     mCashOutButton.setVisibility(View.INVISIBLE);
@@ -119,14 +117,7 @@ public class VendingMachineFragment extends Fragment {
         mPayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                mItems.setIsCreditUsed(false);
                 if (mItems.getTotalAmount() == 0) {
-                    //mIsPaymentDue = false;
-                    mItems.setIsPaymentDue(false);
-                    mItems.clearUnpaid();
-                    mItems.updateTotalCost();
-                    mItems.setCreditInUse(0);
-                    mItems.setUserSpent(0);
                     dismissItemSummaryFragment();
                     mPayButton.setVisibility(View.INVISIBLE);
                     mUseCreditButton.setVisibility(View.INVISIBLE);
@@ -164,27 +155,38 @@ public class VendingMachineFragment extends Fragment {
                     mInsertCoinDialog = InsertCoinDialog.newInstance(mItems);
                     mInsertCoinDialog.setCallback(new InsertCoinDialogCallback() {
                         @Override
-                        public void onDialogCallback(boolean paid, final double spent, final double left) {
+                        public void onDialogCallback(boolean paid, final int spent, final int left) {
+                            Log.d(TAG, "MachineCredit: " + mItems.getMachineCredit() + "\n"
+                                    + "UserCreditLeft: " + mItems.getUserCreditLeft() + "\n"
+                                    + "TotalAmount: " + mItems.getTotalAmount() + "\n"
+                                    + "CreditInUse: " + mItems.getCreditInUse() + "\n"
+                                    + "UserSpent: " + mItems.getUserSpent() + "\n"
+                                    + "PaymentDue: " + mItems.getPaymentDue() + "\n"
+                                    + "IsCreditUsed?: " + mItems.isCreditUsed() + "\n"
+                                    + "IsPaymentDue?: " + mItems.isPaymentDue() + "\n"
+                                    + "left: " + left + "\n"
+                                    + "spent: " + spent + "\n");
                             final AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
                             if (left == 0) {
                                 /*mIsCreditUsed = false;
                                 mIsPaymentDue = false;*/
-                                mItems.setIsCreditUsed(false);
-                                mItems.setIsPaymentDue(false);
+                                /*mItems.setIsCreditUsed(false);
+                                mItems.setIsPaymentDue(false);*/
                                 builder.setMessage(getString(R.string.alert_message_paid));
                             } else if (left > 0) {
                                /* mIsCreditUsed = false;
                                 mIsPaymentDue = false;*/
-                                mItems.setIsCreditUsed(false);
-                                mItems.setIsPaymentDue(false);
-                                builder.setMessage(getString(R.string.alert_message_over_paid, left));
+                               /* mItems.setIsCreditUsed(false);
+                                mItems.setIsPaymentDue(false);*/
+                                builder.setMessage(getString(R.string.alert_message_over_paid, left / 100f));
+                                Log.d(TAG, left + " ");
                             } else {
-                                //TODO: may not need to assign mISCreditUSed to true twice
+                                //TODO: may not need to assign mIsCreditUsed to true twice
                                 /*mIsCreditUsed = true;
                                 mIsPaymentDue = true;*/
-                                mItems.setIsCreditUsed(true);
-                                mItems.setIsPaymentDue(true);
-                                builder.setMessage(getString(R.string.alert_message_due_payment, -left));
+                                /*mItems.setIsCreditUsed(true);
+                                mItems.setIsPaymentDue(true);*/
+                                builder.setMessage(getString(R.string.alert_message_due_payment, -left / 100f));
                             }
                             Log.d(TAG, "CreditInUsing" + mItems.getCreditInUse());
                             builder.setCancelable(false);
@@ -199,14 +201,18 @@ public class VendingMachineFragment extends Fragment {
                                     // credit /
                                     // is using credit = false / set credit in using = 0
                                     if (left >= 0) {
-                                        mItems.clearUnpaid();
-                                        mItems.updateTotalCost();
-                                        Log.d(TAG, "Total cost after pay: " + mItems.getTotalAmount());
-                                        mItems.addUserCreditLeft(left);
+                                        //Items updates
                                         mItems.addMachineCredit(spent);
-                                        Log.d(TAG, mItems.getMachineCredit() + "");
+                                        mItems.addUserCreditLeft(left);
                                         mItems.setCreditInUse(0);
                                         mItems.setUserSpent(0);
+                                        mItems.setPaymentDue(0);
+                                        mItems.clearUnpaid();
+                                        mItems.updateTotalAmount();
+                                        mItems.setIsCreditUsed(false);
+                                        mItems.setIsPaymentDue(false);
+                                        Log.d(TAG, "Total cost after pay: " + mItems.getTotalAmount());
+                                        Log.d(TAG, mItems.getMachineCredit() + "");
                                         dismissItemSummaryFragment();
                                         mPayButton.setVisibility(View.INVISIBLE);
                                         mUseCreditButton.setVisibility(View.INVISIBLE);
@@ -222,15 +228,17 @@ public class VendingMachineFragment extends Fragment {
                                         left < 0, set total cost / add machine credit
                                          mIsPaymentDue = true;
                                         set user spent money*/
-                                        mItems.setIsPaymentDue(true);
-                                        mItems.setUserSpent(spent);
+                                        //Items updates
                                         mItems.addMachineCredit(spent);
+                                        mItems.addUserSpent(spent);
                                         mItems.setPaymentDue(-left);
+                                        mItems.setIsPaymentDue(true);
                                         createItemSummaryFragment();
                                         handler = new Handler();
                                         mEffect.interrupt();
                                         mEffect = new FadeEffect();
-                                        mMachineHint.setText(getString(R.string.machine_hint_money_required, -left));
+                                        mMachineHint.setText(getString(R.string.machine_hint_money_required,
+                                                -left / 100f));
                                         mRelativeLayout.setBackgroundColor(ContextCompat.getColor(mActivity, R.color
                                                 .lightGreen));
                                         mEffect.action(1, mMachineHint);
@@ -257,7 +265,7 @@ public class VendingMachineFragment extends Fragment {
                                         }
                                     }, 3000);
                                     mUserCredit.setText(String.format(Locale.US, "Store Credit: $%.02f", mItems
-                                            .getUserCreditLeft()));
+                                            .getUserCreditLeft() / 100f));
                                     if (mItems.getUserCreditLeft() > 0) {
                                         mCashOutButton.setVisibility(View.VISIBLE);
                                     }
@@ -281,14 +289,16 @@ public class VendingMachineFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setMessage(getString(R.string.alert_cash_out, mItems.getUserCreditLeft()));
+                builder.setMessage(getString(R.string.alert_cash_out, mItems.getUserCreditLeft() / 100f));
                 builder.setCancelable(false);
                 builder.setPositiveButton(R.string.alert_btn_confirm, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        // to update Machine Credit by adding - credit left
+                        mItems.addMachineCredit(-mItems.getUserCreditLeft());
                         mItems.setUserCreditLeft(0);
-                        mUserCredit.setText(String.format(Locale.US, "Store Credit: $%.02f", mItems.getUserCreditLeft
-                                ()));
+                        mUserCredit.setText(String.format(Locale.US, "Store Credit: $%.02f", mItems
+                                .getUserCreditLeft() / 100f));
                         mCashOutButton.setVisibility(View.INVISIBLE);
                         dialog.dismiss();
                     }
@@ -346,6 +356,6 @@ public class VendingMachineFragment extends Fragment {
     private void initialFontSize() {
         titleFontSize = DisplayAppearanceManager.titleFontSize;
         restFontSize = DisplayAppearanceManager.subFontSize;
-        Log.d(TAG,titleFontSize + " " + restFontSize);
+        Log.d(TAG, titleFontSize + " " + restFontSize);
     }
 }

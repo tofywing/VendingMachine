@@ -30,12 +30,12 @@ public class DisplayAppearanceManager {
     public static float selectorSubSize = -1;
     public static float dialogFragmentTitle = -1;
     public static float dialogFragmentSub = -1;
-    private double titleFontBias = 0.21;
-    private double subFontBias = 0.12;
-    private double selectorTitleBias = 0.14;
-    private double selectorSubBias = 0.10;
-    private double dialogFragmentTitleBias = 0.14;
-    private double dialogFragmentSubBias = 0.10;
+    private float titleFontBias = 0.21f;
+    private float subFontBias = 0.12f;
+    private float selectorTitleBias = 0.14f;
+    private float selectorSubBias = 0.10f;
+    private float dialogFragmentTitleBias = 0.14f;
+    private float dialogFragmentSubBias = 0.10f;
 
     private SharedPreferences mPrefs;
     DisplayAppearanceCallback mAppearanceCallback;
@@ -115,11 +115,11 @@ public class DisplayAppearanceManager {
         return selectorSubSize;
     }
 
-    public double getDialogFragmentTitle() {
+    public float getDialogFragmentTitle() {
         return dialogFragmentTitle;
     }
 
-    public double getDialogFragmentSub() {
+    public float getDialogFragmentSub() {
         return dialogFragmentSub;
     }
 

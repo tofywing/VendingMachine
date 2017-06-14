@@ -75,17 +75,17 @@ public class VendingMachineActivity extends AppCompatActivity {
     //Amount 30, Credit $50
     public static Items initialVendingMachine() {
         Items items = new Items();
-        Item cola = new Item(R.drawable.cola, "Cola", 30, 1.00, 30, 0);
-        Item chips = new Item(R.drawable.chips, "Chips", 30, 0.50, 30, 0);
-        Item candy = new Item(R.drawable.candy, "Candy", 30, 0.65, 30, 0);
+        Item cola = new Item(R.drawable.cola, "Cola", 30, 100, 3000, 0);
+        Item chips = new Item(R.drawable.chips, "Chips", 30, 50, 3000, 0);
+        Item candy = new Item(R.drawable.candy, "Candy", 30, 65, 3000, 0);
         items.addItem(cola);
         items.addItem(chips);
         items.addItem(candy);
-        items.addMachineCredit(50d);
+        items.addMachineCredit(5000);
         return items;
     }
 
-    public static Items reloadVendingMachine(Items items, int amount, double credit) {
+    public static Items reloadVendingMachine(Items items, int amount, int credit) {
         if (items == null) {
             return initialVendingMachine();
         } else {
@@ -143,7 +143,7 @@ public class VendingMachineActivity extends AppCompatActivity {
             mMachineSpecSubTitle.setTextSize(selectorSubSize);
             Log.d(TAG, mMachineSpecSubTitle.getTextSize() + " ");
             mMachineSpecSubTitle.setText(getString(R.string.machine_specs_subtitle, mItems.getItemAmountSummary(),
-                    mItems.getMachineCredit()));
+                    mItems.getMachineCredit() / 100f));
             builder.setCancelable(true);
             builder.setPositiveButton(getString(R.string.alert_btn_reload), new DialogInterface.OnClickListener() {
                 @Override
@@ -153,14 +153,14 @@ public class VendingMachineActivity extends AppCompatActivity {
                         snakeBarString = getString(R.string.machine_specs_no_selection_made);
                     } else {
                         if (mItemReload.isChecked() && mCreditReload.isChecked()) {
-                            snakeBarString = getString(R.string.machine_specs_item_credit_loaded, 30, 50d);
-                            mItems = VendingMachineActivity.reloadVendingMachine(mItems, 30, 50d);
+                            snakeBarString = getString(R.string.machine_specs_item_credit_loaded, 30, 5000/ 100f);
+                            mItems = VendingMachineActivity.reloadVendingMachine(mItems, 30, 5000);
                         } else if (mItemReload.isChecked()) {
                             mItems = VendingMachineActivity.reloadVendingMachine(mItems, 30, 0);
                             snakeBarString = getString(R.string.machine_specs_item_loaded, 30);
                         } else if (mCreditReload.isChecked()) {
-                            mItems = VendingMachineActivity.reloadVendingMachine(mItems, 0, 50d);
-                            snakeBarString = getString(R.string.machine_specs_credit_loaded, 50d);
+                            mItems = VendingMachineActivity.reloadVendingMachine(mItems, 0, 5000);
+                            snakeBarString = getString(R.string.machine_specs_credit_loaded, 5000/100f);
                         }
                         mVendingMachineFragment = (VendingMachineFragment) mFragmentManager.findFragmentById(R.id
                                 .vending_machine_fragment_container);

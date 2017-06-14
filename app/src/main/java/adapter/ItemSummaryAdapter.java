@@ -45,12 +45,12 @@ public class ItemSummaryAdapter extends RecyclerView.Adapter<ItemSummaryAdapter.
             holder.mItemAmount.setText(R.string.summary_title_amount);
             holder.mItemPrice.setText(R.string.summary_title_price);
             //Last position of the items
-        }  else {
+        } else {
             Item item = mItems.get(position - 1);
             holder.mItemName.setText(item.getName());
             holder.mItemQty.setText(String.format(Locale.US, "%d", item.getUnpaid()));
-            holder.mItemAmount.setText(String.format(Locale.US, "$%.02f", item.getUnpaid() * item.getPrice()));
-            holder.mItemPrice.setText(String.format(Locale.US, "$%.02f", item.getPrice()));
+            holder.mItemAmount.setText(String.format(Locale.US, "$%.02f", item.getUnpaid() * item.getPrice() / 100f));
+            holder.mItemPrice.setText(String.format(Locale.US, "$%.02f", item.getPrice() / 100f));
         }
     }
 

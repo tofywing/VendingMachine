@@ -9,17 +9,17 @@ import android.os.Parcelable;
 
 public class Dimes implements Parcelable{
     private int amount;
-    private double val;
+    private int val;
     boolean a;
 
     public Dimes() {
         amount = 0;
-        val = 0.10;
+        val = 10;
     }
 
     protected Dimes(Parcel in) {
         amount = in.readInt();
-        val = in.readDouble();
+        val = in.readInt();
         a = in.readByte() != 0;
     }
 
@@ -47,7 +47,7 @@ public class Dimes implements Parcelable{
         return amount;
     }
 
-    void SetAmount(double inputVal) {
+    void SetAmount(int inputVal) {
         amount += (int) (inputVal / val);
     }
 
@@ -59,7 +59,7 @@ public class Dimes implements Parcelable{
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(amount);
-        dest.writeDouble(val);
+        dest.writeInt(val);
         dest.writeByte((byte) (a ? 1 : 0));
     }
 }

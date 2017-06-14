@@ -6,5 +6,5 @@ package callback;
 
 public interface InsertCoinDialogCallback {
 
-    void onDialogCallback(boolean isPaid, double paid, double left);
+    void onDialogCallback(boolean isPaid, int paid, int left);
 }

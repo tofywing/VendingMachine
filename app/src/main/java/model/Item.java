@@ -14,9 +14,9 @@ public class Item implements Parcelable {
     private String name;
     private int amount;
     private int unpaid;
-    private double price;
+    private int price;
 
-    public Item(int imageSrc, String name, int amount, double price, int inStock, int unpaid) {
+    public Item(int imageSrc, String name, int amount, int price, int inStock, int unpaid) {
         this.imageSrc = imageSrc;
         this.name = name;
         this.amount = amount;
@@ -28,7 +28,7 @@ public class Item implements Parcelable {
         imageSrc = in.readInt();
         name = in.readString();
         amount = in.readInt();
-        price = in.readDouble();
+        price = in.readInt();
         unpaid = in.readInt();
     }
 
@@ -56,7 +56,7 @@ public class Item implements Parcelable {
         this.amount = amount;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
@@ -76,7 +76,7 @@ public class Item implements Parcelable {
         return amount;
     }
 
-    public double getPrice() {
+    public int getPrice() {
         return price;
     }
 
@@ -94,7 +94,7 @@ public class Item implements Parcelable {
         dest.writeInt(imageSrc);
         dest.writeString(name);
         dest.writeInt(amount);
-        dest.writeDouble(price);
+        dest.writeInt(price);
         dest.writeInt(unpaid);
     }
 }

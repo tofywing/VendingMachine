@@ -2,6 +2,7 @@ package model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -10,13 +11,14 @@ import java.util.ArrayList;
  */
 
 public class Items implements Parcelable {
+    public static final String TAG = "items";
     private ArrayList<Item> items;
-    private double machineCredit;
-    private double userCreditLeft;
-    private double totalAmount;
-    private double creditInUse;
-    private double userSpent;
-    private double paymentDue;
+    private int machineCredit;
+    private int userCreditLeft;
+    private int totalAmount;
+    private int creditInUse;
+    private int userSpent;
+    private int paymentDue;
     private boolean isCreditUsed;
     private boolean isPaymentDue;
 
@@ -27,12 +29,12 @@ public class Items implements Parcelable {
 
     private Items(Parcel in) {
         items = in.createTypedArrayList(Item.CREATOR);
-        machineCredit = in.readDouble();
-        userCreditLeft = in.readDouble();
-        totalAmount = in.readDouble();
-        creditInUse = in.readDouble();
-        userSpent = in.readDouble();
-        paymentDue = in.readDouble();
+        machineCredit = in.readInt();
+        userCreditLeft = in.readInt();
+        totalAmount = in.readInt();
+        creditInUse = in.readInt();
+        userSpent = in.readInt();
+        paymentDue = in.readInt();
         isCreditUsed = in.readByte() != 0;
         isPaymentDue = in.readByte() != 0;
     }
@@ -57,12 +59,12 @@ public class Items implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeTypedList(items);
-        dest.writeDouble(machineCredit);
-        dest.writeDouble(userCreditLeft);
-        dest.writeDouble(totalAmount);
-        dest.writeDouble(creditInUse);
-        dest.writeDouble(userSpent);
-        dest.writeDouble(paymentDue);
+        dest.writeInt(machineCredit);
+        dest.writeInt(userCreditLeft);
+        dest.writeInt(totalAmount);
+        dest.writeInt(creditInUse);
+        dest.writeInt(userSpent);
+        dest.writeInt(paymentDue);
         dest.writeByte((byte) (isCreditUsed ? 1 : 0));
         dest.writeByte((byte) (isPaymentDue ? 1 : 0));
     }
@@ -71,7 +73,7 @@ public class Items implements Parcelable {
         this.items = items;
     }
 
-    public void addMachineCredit(double machineCredit) {
+    public void addMachineCredit(int machineCredit) {
         this.machineCredit += machineCredit;
     }
 
@@ -91,23 +93,23 @@ public class Items implements Parcelable {
         return items.get(position);
     }
 
-    public double getMachineCredit() {
+    public int getMachineCredit() {
         return machineCredit;
     }
 
-    public double getUserCreditLeft() {
+    public int getUserCreditLeft() {
         return userCreditLeft;
     }
 
-    public double getCreditInUse() {
+    public int getCreditInUse() {
         return creditInUse;
     }
 
-    public double getUserSpent() {
+    public int getUserSpent() {
         return userSpent;
     }
 
-    public double getPaymentDue() {
+    public int getPaymentDue() {
         return paymentDue;
     }
 
@@ -119,36 +121,40 @@ public class Items implements Parcelable {
         return isPaymentDue;
     }
 
-    public void updateTotalCost() {
-        double totalCost = 0;
+    public void updateTotalAmount() {
+        int totalCost = 0;
         for (Item item : items) {
             totalCost += item.getPrice() * item.getUnpaid();
         }
         this.totalAmount = totalCost;
     }
 
-    public double getTotalAmount() {
+    public int getTotalAmount() {
         return totalAmount;
     }
 
-    public void addCreditInUse(double userCreditInUsing) {
+    public void addCreditInUse(int userCreditInUsing) {
         this.creditInUse += userCreditInUsing;
     }
 
-    public void addUserCreditLeft(double userCreditLeftCredit) {
+    public void addUserCreditLeft(int userCreditLeftCredit) {
         this.userCreditLeft += userCreditLeftCredit;
     }
 
-    public void setMachineCredit(double machineCredit) {
+    public void setMachineCredit(int machineCredit) {
         this.machineCredit = machineCredit;
     }
 
-    public void setTotalAmount(double totalAmount) {
+    public void setTotalAmount(int totalAmount) {
         this.totalAmount = totalAmount;
     }
 
-    public void setUserSpent(double userSpent) {
+    public void setUserSpent(int userSpent) {
         this.userSpent = userSpent;
+    }
+
+    public void addUserSpent(int userSpent) {
+        this.userSpent += userSpent;
     }
 
     public void setItem(int position, Item item) {
@@ -161,20 +167,21 @@ public class Items implements Parcelable {
         }
     }
 
-    public void setUserCreditLeft(double userCreditLeft) {
+    public void setUserCreditLeft(int userCreditLeft) {
         this.userCreditLeft = userCreditLeft;
     }
 
-    public void setCreditInUse(double creditInUse) {
+    public void setCreditInUse(int creditInUse) {
         this.creditInUse = creditInUse;
     }
 
-    public void setPaymentDue(double paymentDue) {
+    public void setPaymentDue(int paymentDue) {
         this.paymentDue = paymentDue;
     }
 
     public void setIsCreditUsed(boolean isCreditUsed) {
         this.isCreditUsed = isCreditUsed;
+        Log.d(TAG, isCreditUsed + "");
     }
 
     public void setIsPaymentDue(boolean isPaymentDue) {

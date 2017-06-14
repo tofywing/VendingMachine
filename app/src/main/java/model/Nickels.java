@@ -9,11 +9,11 @@ import java.util.ArrayList;
 public class Nickels {
 
     private int amount;
-    private double val;
+    private int val;
 
     public Nickels() {
         amount = 0;
-        val = 0.05;
+        val = 5;
     }
 
     void addNickel() {
@@ -28,7 +28,7 @@ public class Nickels {
         return amount;
     }
 
-    void SetAmount(double inputVal) {
+    void SetAmount(int inputVal) {
         amount += (int) (inputVal / val);
     }
 }

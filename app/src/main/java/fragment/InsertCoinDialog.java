@@ -21,6 +21,8 @@ import manager.DisplayAppearanceManager;
 import model.Items;
 import pillar_technology.vendingmachine.R;
 
+import static pillar_technology.vendingmachine.R.id.quarter_stealth_button;
+
 /**
  * Created by Yee on 5/29/17.
  */
@@ -36,19 +38,22 @@ public class InsertCoinDialog extends DialogFragment {
     ImageButton mNickelsAdd;
     ImageButton mNickelsSub;
     TextView mNickelSpend;
+    ImageView mNickelStealthButton;
     TextView mDimeTitle;
     ImageView mDimeImage;
     ImageButton mDimeAdd;
     ImageButton mDimeSub;
     TextView mDimeSpend;
+    ImageButton mDimeStealButton;
     TextView mQuarterTitle;
     ImageView mQuarterImage;
     ImageButton mQuarterAdd;
     ImageButton mQuarterSub;
-    ImageButton mCancelBtn;
     TextView mQuarterSpend;
+    ImageButton mQuarterStealthButton;
+    ImageButton mCancelBtn;
     Button mPay;
-    double totalSpend;
+    int totalSpend;
     int nickelSpend;
     int dimeSpend;
     int quarterSpend;
@@ -79,11 +84,11 @@ public class InsertCoinDialog extends DialogFragment {
         quarterSpend = 0;
         mTotalCost = (TextView) dialog.findViewById(R.id.dialog_total_cost);
         mTotalCost.setTextSize(dialogTitleSize);
-        mTotalCost.setText(String.format(Locale.US, "TOTAL: $%.02f", mItems.isPaymentDue() ? mItems.getPaymentDue() :
-                mItems.getTotalAmount()));
+        mTotalCost.setText(String.format(Locale.US, "TOTAL: $%.02f", mItems.isPaymentDue() ? mItems
+                .getPaymentDue() / 100f : mItems.getTotalAmount() / 100f));
         mTotalSpend = (TextView) dialog.findViewById(R.id.dialog_total_spend);
         mTotalSpend.setTextSize(dialogTitleSize);
-        mTotalSpend.setText(String.format(Locale.US, "SPEND: $%.02f", totalSpend));
+        mTotalSpend.setText(String.format(Locale.US, "SPEND: $%.02f", totalSpend / 100f));
         mNickelTitle = (TextView) dialog.findViewById(R.id.nickels);
         mNickelTitle.setTextSize(dialogSubSize);
         mNickelSpend = (TextView) dialog.findViewById(R.id.nickel_count);
@@ -110,10 +115,18 @@ public class InsertCoinDialog extends DialogFragment {
                 if (nickelSpend == 0) {
                     Snackbar.make(v, v.getContext().getString(R.string.alert_nickels), Snackbar.LENGTH_SHORT).show();
                 } else {
-                    nickelSpend--;
-                    totalSpend -= 0.05;
-                    mNickelSpend.setText(String.valueOf(nickelSpend));
-                    mTotalSpend.setText(String.format(Locale.US, "SPEND: $%.02f", totalSpend));
+                    deleteNickelAction();
+                }
+            }
+        });
+        mNickelStealthButton = (ImageView) dialog.findViewById(R.id.nickel_stealth_button);
+        mNickelStealthButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (nickelSpend == 0) {
+                    Snackbar.make(v, v.getContext().getString(R.string.alert_nickels), Snackbar.LENGTH_SHORT).show();
+                } else {
+                    deleteNickelAction();
                 }
             }
         });
@@ -143,10 +156,18 @@ public class InsertCoinDialog extends DialogFragment {
                 if (dimeSpend == 0) {
                     Snackbar.make(v, v.getContext().getString(R.string.alert_dime), Snackbar.LENGTH_SHORT).show();
                 } else {
-                    dimeSpend--;
-                    totalSpend -= 0.10;
-                    mDimeSpend.setText(String.valueOf(dimeSpend));
-                    mTotalSpend.setText(String.format(Locale.US, "SPEND: $%.02f", totalSpend));
+                    deleteDimeAction();
+                }
+            }
+        });
+        mDimeStealButton = (ImageButton) dialog.findViewById(R.id.dime_stealth_button);
+        mDimeStealButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (dimeSpend == 0) {
+                    Snackbar.make(v, v.getContext().getString(R.string.alert_dime), Snackbar.LENGTH_SHORT).show();
+                } else {
+                    deleteDimeAction();
                 }
             }
         });
@@ -176,10 +197,18 @@ public class InsertCoinDialog extends DialogFragment {
                 if (quarterSpend == 0) {
                     Snackbar.make(v, v.getContext().getString(R.string.alert_quarter), Snackbar.LENGTH_SHORT).show();
                 } else {
-                    quarterSpend--;
-                    totalSpend -= 0.25;
-                    mQuarterSpend.setText(String.valueOf(quarterSpend));
-                    mTotalSpend.setText(String.format(Locale.US, "SPEND: $%.02f", totalSpend));
+                    deleteQuarterAction();
+                }
+            }
+        });
+        mQuarterStealthButton = (ImageButton) dialog.findViewById(quarter_stealth_button);
+        mQuarterStealthButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (quarterSpend == 0) {
+                    Snackbar.make(v, v.getContext().getString(R.string.alert_quarter), Snackbar.LENGTH_SHORT).show();
+                } else {
+                    deleteQuarterAction();
                 }
             }
         });
@@ -189,9 +218,10 @@ public class InsertCoinDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
                 if (payChecking()) {
+                    Log.d(TAG, "paid: " + totalSpend + " left: " + (totalSpend - (mItems.isPaymentDue() ? mItems
+                            .getPaymentDue() : mItems.getTotalAmount())));
                     mCallback.onDialogCallback(true, totalSpend, totalSpend - (mItems.isPaymentDue() ? mItems
-                            .getPaymentDue() :
-                            mItems.getTotalAmount()));
+                            .getPaymentDue() : mItems.getTotalAmount()));
                     dismiss();
                 }
             }
@@ -212,11 +242,11 @@ public class InsertCoinDialog extends DialogFragment {
     }
 
     private boolean payChecking() {
-        double different = totalSpend - mItems.getTotalAmount();
+        int different = totalSpend - mItems.getTotalAmount();
         boolean noProblem = different <= mItems.getMachineCredit();
         if (!noProblem) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            builder.setMessage(getString(R.string.alert_exact_change, mItems.getMachineCredit()));
+            builder.setMessage(getString(R.string.alert_exact_change, mItems.getMachineCredit() / 100f));
             builder.setPositiveButton(R.string.alert_btn_confirm, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -239,22 +269,49 @@ public class InsertCoinDialog extends DialogFragment {
 
     private void addNickelAction() {
         nickelSpend++;
-        totalSpend += 0.05;
+        totalSpend += 5;
+        Log.d(TAG, "nickel add: " + 5 + " total spend: " + totalSpend);
         mNickelSpend.setText(String.valueOf(nickelSpend));
-        mTotalSpend.setText(String.format(Locale.US, "SPEND: $%.02f", totalSpend));
+        mTotalSpend.setText(String.format(Locale.US, "SPEND: $%.02f", totalSpend / 100f));
     }
 
     private void addDimeAction() {
         dimeSpend++;
-        totalSpend += 0.10;
+        totalSpend += 10;
+        Log.d(TAG, "dime add: " + 10 + " total spend: " + totalSpend);
         mDimeSpend.setText(String.valueOf(dimeSpend));
-        mTotalSpend.setText(String.format(Locale.US, "SPEND: $%.02f", totalSpend));
+        mTotalSpend.setText(String.format(Locale.US, "SPEND: $%.02f", totalSpend / 100f));
     }
 
     private void addQuarterAction() {
         quarterSpend++;
-        totalSpend += 0.25;
+        totalSpend += 25;
+        Log.d(TAG, "quarter add: " + 25 + " total spend: " + totalSpend);
         mQuarterSpend.setText(String.valueOf(quarterSpend));
-        mTotalSpend.setText(String.format(Locale.US, "SPEND: $%.02f", totalSpend));
+        mTotalSpend.setText(String.format(Locale.US, "SPEND: $%.02f", totalSpend / 100f));
+    }
+
+    private void deleteNickelAction() {
+        nickelSpend--;
+        totalSpend -= 5;
+        Log.d(TAG, "nickel delete: " + 5 + " total spend: " + totalSpend);
+        mNickelSpend.setText(String.valueOf(nickelSpend));
+        mTotalSpend.setText(String.format(Locale.US, "SPEND: $%.02f", totalSpend / 100f));
+    }
+
+    private void deleteDimeAction() {
+        dimeSpend--;
+        totalSpend -= 10;
+        Log.d(TAG, "dime delete: " + 10 + " total spend: " + totalSpend);
+        mDimeSpend.setText(String.valueOf(dimeSpend));
+        mTotalSpend.setText(String.format(Locale.US, "SPEND: $%.02f", totalSpend / 100f));
+    }
+
+    private void deleteQuarterAction() {
+        quarterSpend--;
+        totalSpend -= 25;
+        Log.d(TAG, "quarter delete: " + 25 + " total spend: " + totalSpend);
+        mQuarterSpend.setText(String.valueOf(quarterSpend));
+        mTotalSpend.setText(String.format(Locale.US, "SPEND: $%.02f", totalSpend / 100f));
     }
 }

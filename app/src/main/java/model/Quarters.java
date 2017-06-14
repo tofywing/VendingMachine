@@ -6,11 +6,11 @@ package model;
 
 public class Quarters {
     private int amount;
-    private double val;
+    private int val;
 
     public Quarters() {
         amount = 0;
-        val = 0.25;
+        val = 25;
     }
 
     void addQuarter() {
@@ -25,7 +25,7 @@ public class Quarters {
         return amount;
     }
 
-    void SetAmount(double inputVal) {
+    void SetAmount(int inputVal) {
         amount += (int) (inputVal / val);
     }
 }
