@@ -65,6 +65,7 @@
             android:layout_centerVertical="true"
             android:text="@string/btn_cash_out"
             android:textColor="@color/pureWhite"
+            android:backgroundTint="@color/lightGreen"
             tools:ignore="RelativeOverlap"/>
     </RelativeLayout>
 
@@ -117,7 +118,8 @@
                 android:paddingTop="10dp"
                 android:text="@string/btn_use_credit"
                 android:textColor="@color/pureWhite"
-                android:visibility="invisible"/>
+                android:visibility="invisible"
+                android:backgroundTint="@color/lightGreen"/>
         </RelativeLayout>
     </ScrollView>
 </LinearLayout>

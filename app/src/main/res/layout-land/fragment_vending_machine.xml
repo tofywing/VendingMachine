@@ -72,7 +72,8 @@
                     android:layout_centerVertical="true"
                     android:text="@string/btn_cash_out"
                     android:textColor="@color/pureWhite"
-                    tools:ignore="RelativeOverlap"/>
+                    tools:ignore="RelativeOverlap"
+                    android:backgroundTint="@color/lightGreen"/>
             </RelativeLayout>
         </LinearLayout>
     </RelativeLayout>
@@ -129,7 +130,8 @@
                 android:text="@string/btn_use_credit"
                 android:textColor="@color/pureWhite"
                 android:textSize="18sp"
-                android:visibility="invisible"/>
+                android:visibility="invisible"
+                android:backgroundTint="@color/lightGreen"/>
         </RelativeLayout>
     </ScrollView>
 </LinearLayout>

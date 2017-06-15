@@ -60,11 +60,11 @@ public class ItemSummaryResultAdapter extends RecyclerView.Adapter<ItemSummaryRe
         if (mIsCreditUsed && mIsPaymentDue) {
             resultsDataSet = new LinkedHashMap<>();
             if (mItems != null) {
-                resultsDataSet.put(R.string.summary_result_credit_use, String.format(Locale.US, "-$%.02f", mItems
+                resultsDataSet.put(R.string.summary_result_credit_use, String.format(Locale.US, "($%.02f)", mItems
                         .getCreditInUse() / 100f));
                 resultsDataSet.put(R.string.summary_result_total_amount, String.format(Locale.US, "$%.02f", mItems
                         .getTotalAmount() / 100f));
-                resultsDataSet.put(R.string.summary_result_total_payment, String.format(Locale.US, "-$%.02f", mItems
+                resultsDataSet.put(R.string.summary_result_total_payment, String.format(Locale.US, "($%.02f)", mItems
                         .getUserSpent() / 100f));
                 resultsDataSet.put(R.string.summary_result_amount_due, String.format(Locale.US, "$%.02f", mItems
                         .getPaymentDue() / 100f));
@@ -76,7 +76,7 @@ public class ItemSummaryResultAdapter extends RecyclerView.Adapter<ItemSummaryRe
         else if (mIsCreditUsed) {
             resultsDataSet = new LinkedHashMap<>();
             if (mItems != null) {
-                resultsDataSet.put(R.string.summary_result_credit_use, String.format(Locale.US, "-$%.02f", mItems
+                resultsDataSet.put(R.string.summary_result_credit_use, String.format(Locale.US, "($%.02f)", mItems
                         .getCreditInUse() / 100f));
                 resultsDataSet.put(R.string.summary_result_total_amount, String.format(Locale.US, "$%.02f", mItems
                         .getTotalAmount() / 100f));
@@ -90,7 +90,7 @@ public class ItemSummaryResultAdapter extends RecyclerView.Adapter<ItemSummaryRe
             if (mItems != null) {
                 resultsDataSet.put(R.string.summary_result_total_amount, String.format(Locale.US, "$%.02f", mItems
                         .getTotalAmount() / 100f));
-                resultsDataSet.put(R.string.summary_result_total_payment, String.format(Locale.US, "-$%.02f", mItems
+                resultsDataSet.put(R.string.summary_result_total_payment, String.format(Locale.US, "($%.02f)", mItems
                         .getUserSpent() / 100f));
                 resultsDataSet.put(R.string.summary_result_amount_due, String.format(Locale.US, "$%.02f", mItems
                         .getPaymentDue() / 100f));

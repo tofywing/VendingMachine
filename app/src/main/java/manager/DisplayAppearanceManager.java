@@ -3,6 +3,7 @@ package manager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Point;
+import android.util.Log;
 import android.view.Display;
 
 import callback.DisplayAppearanceCallback;
@@ -21,21 +22,25 @@ public class DisplayAppearanceManager {
     private static final String FONT_SELECTOR_SUB = "VendingMachineFragmentSelectorSubFont";
     private static final String FONT_DIALOG_TITLE = "InsertCoinDialogTitle";
     private static final String FONT_DIALOG_SUB = "InsertCoinDialogSub";
+    private static final String COMPARE_RATIO = "CompareRatio";
+    public static final float REFERENCE_RATIO = 0.602f;
 
     private int screenWidth;
     private int screenLength;
+
     public static float titleFontSize = -1;
     public static float subFontSize = -1;
     public static float selectorTitleSize = -1;
     public static float selectorSubSize = -1;
     public static float dialogFragmentTitle = -1;
     public static float dialogFragmentSub = -1;
+    public static float compareRatio = -1;
     private float titleFontBias = 0.21f;
     private float subFontBias = 0.12f;
     private float selectorTitleBias = 0.14f;
-    private float selectorSubBias = 0.10f;
+    private float selectorSubBias = 0.12f;
     private float dialogFragmentTitleBias = 0.14f;
-    private float dialogFragmentSubBias = 0.10f;
+    private float dialogFragmentSubBias = 0.11f;
 
     private SharedPreferences mPrefs;
     DisplayAppearanceCallback mAppearanceCallback;
@@ -45,16 +50,22 @@ public class DisplayAppearanceManager {
     }
 
     public void setupDisplayAppearance(Display display) {
+        Log.d(TAG, "Appearance setup");
         Point size = new Point();
         display.getSize(size);
         int screenWidth = size.x;
         int screenLength = size.y;
-        float title = (float) (screenWidth * titleFontBias / 10f);
-        float rest = (float) (screenWidth * subFontBias / 10);
-        float selectorTitle = (float) (screenWidth * selectorTitleBias / 10);
-        float selectorSub = (float) (screenWidth * selectorSubBias / 10);
-        float dialogTitle = (float) (screenWidth * dialogFragmentTitleBias / 10);
-        float dialogSub = (float) (screenWidth * dialogFragmentSubBias / 10);
+        float sizeRatio = screenWidth / (float) screenLength;
+        float compareRatio = REFERENCE_RATIO / sizeRatio;
+        float compareScreenWidth = screenWidth * compareRatio;
+        float compareScreenLength = screenLength * compareRatio;
+        Log.d(TAG, "compare ratio: " + compareRatio + "\n");
+        float title = compareScreenWidth * titleFontBias / 10;
+        float rest = compareScreenWidth * subFontBias / 10;
+        float selectorTitle = compareScreenWidth * selectorTitleBias / 10;
+        float selectorSub = compareScreenWidth * selectorSubBias / 10;
+        float dialogTitle = compareScreenWidth * dialogFragmentTitleBias / 10;
+        float dialogSub = compareScreenWidth * dialogFragmentSubBias / 10;
         setScreenWidth(screenWidth);
         setScreenLength(screenLength);
         setTitleFontSize(title);
@@ -63,6 +74,7 @@ public class DisplayAppearanceManager {
         setSelectorSubSize(selectorSub);
         setDialogFragmentTitle(dialogTitle);
         setDialogFragmentSub(dialogSub);
+        setCompareRatio(compareRatio);
         SharedPreferences.Editor editor = mPrefs.edit();
         editor.putInt(SCREEN_WIDTH, screenWidth);
         editor.putInt(SCREEN_LENGTH, screenLength);
@@ -72,10 +84,21 @@ public class DisplayAppearanceManager {
         editor.putFloat(FONT_SELECTOR_SUB, selectorSub);
         editor.putFloat(FONT_DIALOG_TITLE, dialogTitle);
         editor.putFloat(FONT_DIALOG_SUB, dialogSub);
+        editor.putFloat(COMPARE_RATIO,compareRatio);
         editor.apply();
+        Log.d(TAG, "Screen width: " + screenWidth + "\n"
+                + "Screen length: " + screenLength + "\n"
+                + "Title font: " + titleFontSize + "\n"
+                + "Sub font: " + subFontSize + "\n"
+                + "Selector title: " + selectorTitleSize + "\n"
+                + "Selector sub: " + selectorSubSize + "\n"
+                + "Dialog title: " + dialogFragmentTitle + "\n"
+                + "Dialog sub: " + dialogFragmentSub + "\n" + compareRatio
+        );
     }
 
     public void initializeDisplayAppearance() {
+        Log.d(TAG, "Appearance initialize");
         screenWidth = mPrefs.getInt(SCREEN_WIDTH, -1);
         screenLength = mPrefs.getInt(SCREEN_LENGTH, -1);
         titleFontSize = mPrefs.getFloat(FONT_TITLE, -1);
@@ -84,6 +107,16 @@ public class DisplayAppearanceManager {
         selectorSubSize = mPrefs.getFloat(FONT_SELECTOR_SUB, -1);
         dialogFragmentTitle = mPrefs.getFloat(FONT_DIALOG_TITLE, -1);
         dialogFragmentSub = mPrefs.getFloat(FONT_DIALOG_SUB, -1);
+        compareRatio = mPrefs.getFloat(COMPARE_RATIO, - 1);
+        Log.d(TAG, "Screen width: " + screenWidth + "\n"
+                + "Screen length: " + screenLength + "\n"
+                + "Title font: " + titleFontSize + "\n"
+                + "Sub font: " + subFontSize + "\n"
+                + "Selector title: " + selectorTitleSize + "\n"
+                + "Selector sub: " + selectorSubSize + "\n"
+                + "Dialog title: " + dialogFragmentTitle + "\n"
+                + "Dialog sub: " + dialogFragmentSub + "\n" + compareRatio
+        );
     }
 
     public void onAppearanceReady() {
@@ -123,35 +156,43 @@ public class DisplayAppearanceManager {
         return dialogFragmentSub;
     }
 
-    public void setScreenWidth(int screenWidth) {
+    public static float getCompareRatio() {
+        return compareRatio;
+    }
+
+    private void setScreenWidth(int screenWidth) {
         this.screenWidth = screenWidth;
     }
 
-    public void setScreenLength(int screenLength) {
+    private void setScreenLength(int screenLength) {
         this.screenLength = screenLength;
     }
 
-    public void setTitleFontSize(float titleFontSize) {
-        this.titleFontSize = titleFontSize;
+    private void setTitleFontSize(float titleFontSize) {
+        DisplayAppearanceManager.titleFontSize = titleFontSize;
     }
 
-    public void setSubFontSize(float subFontSize) {
-        this.subFontSize = subFontSize;
+    private void setSubFontSize(float subFontSize) {
+        DisplayAppearanceManager.subFontSize = subFontSize;
     }
 
-    public void setSelectorTitleSize(float selectorTitleSize) {
-        this.selectorTitleSize = selectorTitleSize;
+    private void setSelectorTitleSize(float selectorTitleSize) {
+        DisplayAppearanceManager.selectorTitleSize = selectorTitleSize;
     }
 
-    public void setSelectorSubSize(float selectorSubSize) {
-        this.selectorSubSize = selectorSubSize;
+    private void setSelectorSubSize(float selectorSubSize) {
+        DisplayAppearanceManager.selectorSubSize = selectorSubSize;
     }
 
-    public void setDialogFragmentTitle(float dialogFragmentTitle) {
-        this.dialogFragmentTitle = dialogFragmentTitle;
+    private void setDialogFragmentTitle(float dialogFragmentTitle) {
+        DisplayAppearanceManager.dialogFragmentTitle = dialogFragmentTitle;
     }
 
-    public void setDialogFragmentSub(float dialogFragmentSub) {
-        this.dialogFragmentSub = dialogFragmentSub;
+    private void setDialogFragmentSub(float dialogFragmentSub) {
+        DisplayAppearanceManager.dialogFragmentSub = dialogFragmentSub;
+    }
+
+    public static void setCompareRatio(float compareRatio) {
+        DisplayAppearanceManager.compareRatio = compareRatio;
     }
 }

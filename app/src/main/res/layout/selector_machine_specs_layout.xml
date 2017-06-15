@@ -10,6 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/machine_specs_title"
+        android:textColor="@color/pureBlack"
         android:textStyle="italic"/>
 
     <TextView

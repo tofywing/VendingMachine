@@ -179,6 +179,10 @@ public class Items implements Parcelable {
         this.paymentDue = paymentDue;
     }
 
+    public void addPaymentDue(int amount){
+        this.paymentDue += amount;
+    }
+
     public void setIsCreditUsed(boolean isCreditUsed) {
         this.isCreditUsed = isCreditUsed;
         Log.d(TAG, isCreditUsed + "");

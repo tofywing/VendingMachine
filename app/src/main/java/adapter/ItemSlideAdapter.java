@@ -118,6 +118,7 @@ public class ItemSlideAdapter extends PagerAdapter {
                         itemAmount.setText(String.format(Locale.US, "Amount: %d", item.getAmount()));
                         mItems.setItem(position, item);
                         mItems.updateTotalAmount();
+                        mItems.addPaymentDue(-item.getPrice());
                         Log.d(TAG, mItems.getTotalAmount() + "");
                         createItemSummaryFragment();
                     }
@@ -196,6 +197,7 @@ public class ItemSlideAdapter extends PagerAdapter {
             }
             item.setAmount(item.getAmount() - 1);
             item.setUnpaid(item.getUnpaid() + 1);
+            mItems.addPaymentDue(item.getPrice());
             itemAmount.setText(String.format(Locale.US, "Amount: %d", item.getAmount()));
             mItems.updateTotalAmount();
             createItemSummaryFragment();

@@ -1,18 +1,25 @@
 package fragment;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Locale;
 
@@ -184,6 +191,7 @@ public class InsertCoinDialog extends DialogFragment {
             }
         });
         mQuarterImage = (ImageView) dialog.findViewById(R.id.quarter_pic);
+
         mQuarterImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -313,5 +321,23 @@ public class InsertCoinDialog extends DialogFragment {
         Log.d(TAG, "quarter delete: " + 25 + " total spend: " + totalSpend);
         mQuarterSpend.setText(String.valueOf(quarterSpend));
         mTotalSpend.setText(String.format(Locale.US, "SPEND: $%.02f", totalSpend / 100f));
+    }
+
+
+
+    private Bitmap getScaledBitmap (int resourceID){
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resourceID);
+        Bitmap newBitmap = Bitmap.createScaledBitmap(bitmap,(int)(bitmap.getWidth()/DisplayAppearanceManager
+                .compareRatio), (int)(bitmap.getHeight()/DisplayAppearanceManager.compareRatio),true);
+        return newBitmap;
+    }
+
+
+    public float convertDpToPixel(float dp, Context context)
+    {
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float px = dp * (metrics.densityDpi / 160f);
+        return px;
     }
 }

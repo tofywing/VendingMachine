@@ -20,6 +20,8 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -31,7 +33,7 @@ import model.Items;
 
 public class VendingMachineActivity extends AppCompatActivity {
     public static final String TAG = "VendingMachineActivity";
-    public static final String TAG_ITEMS_DATA = "VendingMachineActivityItemsData";
+    public static final String TAG_ITEMS_DATA = "VendingMachineActivityItemsDataSaving";
     public static final String TAG_SHARED_PREFERENCE = "VendingMachineActivitySharedPreference";
 
     SharedPreferences mPreferences;
@@ -105,7 +107,7 @@ public class VendingMachineActivity extends AppCompatActivity {
 
     private void savePreferenceData() {
         SharedPreferences.Editor editor = mPreferences.edit();
-        Gson gson = new GsonBuilder().serializeSpecialFloatingPointValues().create();
+        Gson gson = new Gson();
         String json = gson.toJson(mItems);
         editor.putString(TAG_ITEMS_DATA, json);
         editor.apply();
@@ -113,9 +115,8 @@ public class VendingMachineActivity extends AppCompatActivity {
 
     private Items getPreferenceData() {
         String json = mPreferences.getString(TAG_ITEMS_DATA, "");
-        Gson gson = new GsonBuilder().serializeSpecialFloatingPointValues().create();
-        return gson.fromJson(json, new TypeToken<Items>() {
-        }.getType());
+        Gson gson = new Gson();
+        return gson.fromJson(json, Items.class);
     }
 
     @Override
@@ -229,7 +230,7 @@ public class VendingMachineActivity extends AppCompatActivity {
     private void initialScreenAppearance() {
         DisplayAppearanceManager displayManager = new DisplayAppearanceManager(this);
         displayManager.initializeDisplayAppearance();
-        if (displayManager.getTitleFontSize() == -1) {
+        if (displayManager.getTitleFontSize() == -1.0f) {
             Display display = getWindowManager().getDefaultDisplay();
             Point size = new Point();
             display.getSize(size);

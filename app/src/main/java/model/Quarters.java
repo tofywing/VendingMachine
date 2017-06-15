@@ -26,6 +26,6 @@ public class Quarters {
     }
 
     void SetAmount(int inputVal) {
-        amount += (int) (inputVal / val);
+        amount += inputVal / val;
     }
 }
